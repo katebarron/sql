@@ -11,7 +11,7 @@
 carpentry: 'swc'
 
 # Overall title for pages.
-title: 'Databases and SQL'
+title: 'SQL Queries in Redivis'
 
 # Date the lesson was created (YYYY-MM-DD, this is empty by default)
 created: '2014-11-21'
