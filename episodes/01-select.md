@@ -6,8 +6,7 @@ exercises: 5
 
 ::::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain the difference between a table, a record, and a field.
-- Explain the difference between a database and a database manager.
+
 - Write a query to select all values for specific fields from a single table.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -28,7 +27,7 @@ When we are using a spreadsheet,
 we put formulas into cells to calculate new values based on old ones.
 When we are using a database,
 we send commands
-(usually called [queries](../learners/reference.md#query\))
+(usually called [queries](../learners/reference.md#query))
 to a [database manager](../learners/reference.md#database-manager):
 a program that manipulates the database for us.
 The database manager does whatever lookups and calculations the query specifies,
@@ -41,271 +40,112 @@ SQL provides hundreds of different ways to analyze and recombine data.
 We will only look at a handful of queries,
 but that handful accounts for most of what scientists do.
 
-:::::::::::::::::::::::::::::::::::::::::  callout
 
-## Changing Database Managers
+Let's take a look at the tables of the database we will use in our examples.
 
-Many database managers --- Oracle,
-IBM DB2, PostgreSQL, MySQL, Microsoft Access, and SQLite ---  understand
-SQL but each stores data in a different way,
-so a database created with one cannot be used directly by another.
-However, every database manager
-can import and export data in a variety of formats like .csv, SQL,
-so it *is* possible to move information from one to another.
+In your Redivis project, select the database node.
 
+![](fig/02.1_database_node.png){#id .class border=5px alt=''}
 
-::::::::::::::::::::::::::::::::::::::::::::::::::
+On the right-hand side of the page, we will see that there are 5 tables associated with this database:
 
-:::::::::::::::::::::::::::::::::::::::::  callout
+- `Countries`
+- `Daily observations`
+- `Inventory`
+- `States`
+- `Stations`
 
-## Getting Into and Out Of SQLite
+Let's select `Stations`.
 
-In order to use the SQLite commands *interactively*, we need to
-enter into the SQLite console.  So, open up a terminal, and run
+![](fig/02.2_select_stations.png){#id .class border=5px alt=''}
 
-```bash
-$ cd /path/to/survey/data/
-$ sqlite3 survey.db
-```
-
-The SQLite command is `sqlite3` and you are telling SQLite to open up
-the `survey.db`.  You need to specify the `.db` file, otherwise SQLite
-will open up a temporary, empty database.
-
-To get out of SQLite, type out `.exit` or `.quit`.  For some
-terminals, `Ctrl-D` can also work.  If you forget any SQLite `.` (dot)
-command, type `.help`.
+The `Stations` table includes information about each station. The **Variables** tab shows us 10 variables and their types. 
 
 
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-Before we get into using SQLite to select the data, let's take a look at the tables of the database we will use in our examples:
-
-<div class="row">
-
-  <div class="col-md-6" markdown="1">
-
-**Person**: People who took readings, `id` being the unique identifier for that person.
-
-| id        | personal  | family     | 
-| --------- | --------- | ---------- |
-| dyer      | William   | Dyer       | 
-| pb        | Frank     | Pabodie    | 
-| lake      | Anderson  | Lake       | 
-| roe       | Valentina | Roerich    | 
-| danforth  | Frank     | Danforth   | 
-
-**Site**: Locations of the `sites` where readings were taken.
-
-| name      | lat       | long       | 
-| --------- | --------- | ---------- |
-| DR-1      | \-49.85    | \-128.57    | 
-| DR-3      | \-47.15    | \-126.72    | 
-| MSK-4     | \-48.87    | \-123.4     | 
-
-**Visited**: Specific identification `id` of the precise locations where readings were taken at the sites and dates.
-
-| id        | site      | dated      | 
-| --------- | --------- | ---------- |
-| 619       | DR-1      | 1927-02-08 | 
-| 622       | DR-1      | 1927-02-10 | 
-| 734       | DR-3      | 1930-01-07 | 
-| 735       | DR-3      | 1930-01-12 | 
-| 751       | DR-3      | 1930-02-26 | 
-| 752       | DR-3      | \-null-     | 
-| 837       | MSK-4     | 1932-01-14 | 
-| 844       | DR-1      | 1932-03-22 | 
-
-  </div>
-
-  <div class="col-md-6" markdown="1">
-
-**Survey**: The measurements taken at each precise location on these sites. They are identified as `taken`. The field `quant` is short for quantity and indicates what is being measured.  The values are `rad`, `sal`, and `temp` referring to 'radiation', 'salinity' and 'temperature', respectively.
-
-| taken     | person    | quant      | reading | 
-| --------- | --------- | ---------- | ------- |
-| 619       | dyer      | rad        | 9\.82    | 
-| 619       | dyer      | sal        | 0\.13    | 
-| 622       | dyer      | rad        | 7\.8     | 
-| 622       | dyer      | sal        | 0\.09    | 
-| 734       | pb        | rad        | 8\.41    | 
-| 734       | lake      | sal        | 0\.05    | 
-| 734       | pb        | temp       | \-21.5   | 
-| 735       | pb        | rad        | 7\.22    | 
-| 735       | \-null-    | sal        | 0\.06    | 
-| 735       | \-null-    | temp       | \-26.0   | 
-| 751       | pb        | rad        | 4\.35    | 
-| 751       | pb        | temp       | \-18.5   | 
-| 751       | lake      | sal        | 0\.1     | 
-| 752       | lake      | rad        | 2\.19    | 
-| 752       | lake      | sal        | 0\.09    | 
-| 752       | lake      | temp       | \-16.0   | 
-| 752       | roe       | sal        | 41\.6    | 
-| 837       | lake      | rad        | 1\.46    | 
-| 837       | lake      | sal        | 0\.21    | 
-| 837       | roe       | sal        | 22\.5    | 
-| 844       | roe       | rad        | 11\.25   | 
-
-  </div>
-
-</div>
-
-Notice that three entries --- one in the `Visited` table,
-and two in the `Survey` table --- don't contain any actual
-data, but instead have a special `-null-` entry:
-we'll return to these missing values
-[later](05-null.md).
-
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Checking If Data is Available
-
-On the shell command line,
-change the working directory to the one where you saved `survey.db`.
-If you saved it at your Desktop you should use
-
-```bash
-$ cd Desktop
-$ ls | grep survey.db
-```
-
-```output
-survey.db
-```
-
-If you get the same output, you can run
-
-```bash
-$ sqlite3 survey.db
-```
-
-```output
-SQLite version 3.8.8 2015-01-16 12:08:06
-Enter ".help" for usage hints.
-sqlite>
-```
-
-that instructs SQLite to load the database in the `survey.db` file.
-
-For a list of useful system commands, enter `.help`.
-
-All SQLite-specific commands are prefixed with a `.` to distinguish them from SQL commands.
-
-Type `.tables` to list the tables in the database.
-
-```sql
-.tables
-```
-
-```output
-Person   Site     Survey   Visited
-```
-
-If you had the above tables, you might be curious what information was stored in each table.
-To get more information on the tables, type `.schema` to see the SQL statements used to create the tables in the database.  The statements will have a list of the columns and the data types each column stores.
-
-```sql
-.schema
-```
-
-```output
-CREATE TABLE Person (id text, personal text, family text);
-CREATE TABLE Site (name text, lat real, long real);
-CREATE TABLE Survey (taken integer, person text, quant text, reading real);
-CREATE TABLE Visited (id integer, site text, dated text);
-```
-
-The output is formatted as \<**columnName** *dataType*\>.  Thus we can see from the first line that the table **Person** has three columns:
-
-- **id** with type *text*
-- **personal** with type *text*
-- **family** with type *text*
-
-Note: The available data types vary based on the database manager - you can search online for what data types are supported.
-
-You can change some SQLite settings to make the output easier to read.
-First,
-set the output mode to display left-aligned columns.
-Then turn on the display of column headers.
-
-```sql
-.mode column
-.header on
-```
-
-Alternatively, you can get the settings automatically by creating a `.sqliterc` file.
-Add the commands above and reopen SQLite.
-For Windows, use `C:\Users\<yourusername>.sqliterc`.
-For Linux/MacOS, use `/Users/<yourusername>/.sqliterc`.
-
-To exit SQLite and return to the shell command line,
-you can use either `.quit` or `.exit`.
+![](fig/02.3_variables_tab.png){#id .class border=5px alt=''}
 
 
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
-For now,
-let's write an SQL query that displays scientists' names.
-We do this using the SQL command `SELECT`,
+We can select specific variables for summary statistics about that variable. Let's select `state`. Under **Variable statistics** we can learn more about this variable, such as the frequency with which certain values occur and the number of distinct (unique) values. Note that the `state` variable is 100% non-null. We’ll return to these missing values [later](05-null.md).
+
+![](fig/02.4_summary_statistics.png){#id .class border=5px alt=''}
+
+Finally, we can select the **Cells** tab to preview records.
+
+![](fig/02.5_cells_tab.png){#id .class border=5px alt=''}
+
+Let's write an SQL query that displays station names and what state the stations are located in.
+
+Select the **Transform** node. Transform nodes are where we will write our SQL queries.
+
+![](fig/02.6_transform_node.png){#id .class border=5px alt=''}
+
+Select **New step** and then **SQL query**. A query editor will display on the right side of the page; it will be populated with a default query.
+
+![](fig/02.7_new_step.png){#id .class border=5px alt=''}
+
+![](fig/02.8_transform_query_editor.png){#id .class border=5px alt=''}
+
+Now we will write a SQL `SELECT` command,
 giving it the names of the columns we want and the table we want them from.
-Our query and its output look like this:
+Our query will look like this:
 
 ```sql
-SELECT family, personal FROM Person;
+SELECT state, name FROM _source_;
 ```
 
-| family    | personal  | 
-| --------- | --------- |
-| Dyer      | William   | 
-| Pabodie   | Frank     | 
-| Lake      | Anderson  | 
-| Roerich   | Valentina | 
-| Danforth  | Frank     | 
+Select **Run** in the upper right-hand corner. Then select the output table node. Here we can see the results of the query.
 
-The semicolon at the end of the query
-tells the database manager that the query is complete and ready to run.
+![](fig/02.9_run.png){#id .class border=5px alt=''}
+
+
+![](fig/02.10_output_table_node.png){#id .class border=5px alt=''}
+
+
+:::: callout
+
+#### Table Name
+
+In the Redivis SQL query editor, the table we are working with is given the alias  `_source_`.
+
+
+::::::::::::
+
+:::: callout
+
+#### Semi-Colon
+
+Generally, database managers expect a semicolon at the end of a query. This tells the database manager that the query is complete and ready to run. In Redivis, semicolons aren't required at the end of a query, but it's a good practice to use them.
+
+
+::::::::::::
+
 We have written our commands in upper case and the names for the table and columns
 in lower case,
 but we don't have to:
 as the example below shows,
-SQL is [case insensitive](../learners/reference.md#case-insensitive).
+SQL is [case insensitive](../learners/reference.md#case-insensitive). 
 
 ```sql
-SeLeCt FaMiLy, PeRsOnAl FrOm PeRsOn;
+SeLeCt StAtE,nAmE FrOm _source_
 ```
 
-| family    | personal  | 
-| --------- | --------- |
-| Dyer      | William   | 
-| Pabodie   | Frank     | 
-| Lake      | Anderson  | 
-| Roerich   | Valentina | 
-| Danforth  | Frank     | 
+![](fig/02.11_case_insensitive_query.png){#id .class border=5px alt=''}
+
+
+![](fig/02.12_case_insensitive_output.png){#id .class border=5px alt=''}
+
+
 
 You can use SQL's case insensitivity
 to distinguish between different parts of an SQL statement.
 In this lesson, we use the convention of using UPPER CASE for SQL keywords
-(such as `SELECT` and `FROM`),
-Title Case for table names, and lower case for field names.
+(such as `SELECT` and `FROM`), and lower case for field names.
 Whatever casing
 convention you choose, please be consistent: complex queries are hard
 enough to read without the extra cognitive load of random
 capitalization.
 
-While we are on the topic of SQL's syntax, one aspect of SQL's syntax
-that can frustrate novices and experts alike is forgetting to finish a
-command with `;` (semicolon).  When you press enter for a command
-without adding the `;` to the end, it can look something like this:
-
-```sql
-SELECT id FROM Person
-...>
-...>
-```
-
-This is SQL's prompt, where it is waiting for additional commands or
-for a `;` to let SQL know to finish.  This is easy to fix!  Just type
-`;` and press enter!
 
 Now, going back to our query,
 it's important to understand that
@@ -316,70 +156,48 @@ For example,
 we could swap the columns in the output by writing our query as:
 
 ```sql
-SELECT personal, family FROM Person;
+SELECT name,state FROM _source_
 ```
 
-| personal  | family    | 
-| --------- | --------- |
-| William   | Dyer      | 
-| Frank     | Pabodie   | 
-| Anderson  | Lake      | 
-| Valentina | Roerich   | 
-| Frank     | Danforth  | 
+![](fig/02.13_reverse_query.png){#id .class border=5px alt=''}
 
-or even repeat columns:
 
-```sql
-SELECT id, id, id FROM Person;
-```
+![](fig/02.14_reverse_output.png){#id .class border=5px alt=''}
 
-| id        | id        | id         | 
-| --------- | --------- | ---------- |
-| dyer      | dyer      | dyer       | 
-| pb        | pb        | pb         | 
-| lake      | lake      | lake       | 
-| roe       | roe       | roe        | 
-| danforth  | danforth  | danforth   | 
 
 As a shortcut,
 we can select all of the columns in a table using `*`:
 
 ```sql
-SELECT * FROM Person;
+SELECT * FROM _source_
 ```
 
-| id        | personal  | family     | 
-| --------- | --------- | ---------- |
-| dyer      | William   | Dyer       | 
-| pb        | Frank     | Pabodie    | 
-| lake      | Anderson  | Lake       | 
-| roe       | Valentina | Roerich    | 
-| danforth  | Frank     | Danforth   | 
+![](fig/02.15_select_all_query.png){#id .class border=5px alt=''}
+
+
+![](fig/02.16_select_all_output.png){#id .class border=5px alt=''}
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Understanding CREATE statements
+## Integers vs. Floats
 
-Use the `.schema` to identify column that contains integers.
+In the `Stations` table, there are two numeric data types: integers and floats. Which variables are integers? Which are floats? What is the difference between integers and floats?
 
 :::::::::::::::  solution
 
 ## Solution
 
-```sql
-.schema
-```
+Integers:
 
-```output
-CREATE TABLE Person (id text, personal text, family text);
-CREATE TABLE Site (name text, lat real, long real);
-CREATE TABLE Survey (taken integer, person text, quant text, reading real);
-CREATE TABLE Visited (id integer, site text, dated text);
-```
+- `wmoid`
 
-From the output, we see that the **taken** column in the **Survey** table (3rd line) is composed of integers.
+Floats:
 
+- `latitude`
+- `longitude`
+- `elevation`
 
+Integers are whole numbers. Floats are numbers with decimal places.
 
 :::::::::::::::::::::::::
 
@@ -387,23 +205,17 @@ From the output, we see that the **taken** column in the **Survey** table (3rd l
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Selecting Site Names
+## Selecting Geopoints
 
-Write a query that selects only the `name` column from the `Site` table.
+Write a query that selects only the `geopoint` column from the `Stations` table.
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```sql
-SELECT name FROM Site;
+SELECT geopoint FROM _source_
 ```
-
-| name      | 
-| --------- |
-| DR-1      | 
-| DR-3      | 
-| MSK-4     | 
 
 :::::::::::::::::::::::::
 
