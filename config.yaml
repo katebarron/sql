@@ -66,10 +66,8 @@ episodes:
 - 05-null.md
 - 06-agg.md
 - 07-join.md
-- 08-hygiene.md
-- 09-create.md
-- 10-prog.md
-- 11-prog-R.md
+
+
 
 # Information for Learners
 learners: 

@@ -77,11 +77,11 @@
   SQL Queries in Redivis
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 5%" class="percentage">
-    5%
+<aside class="col-md-12 lesson-progress"><div style="width: 10%" class="percentage">
+    10%
   </div>
   <div class="progress software">
-    <div class="progress-bar software" role="progressbar" style="width: 5%" aria-valuenow="5" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar software" role="progressbar" style="width: 10%" aria-valuenow="10" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -202,42 +202,6 @@
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
-<div class="accordion accordion-flush" id="accordionFlush9">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading9">
-        <a href="08-hygiene.html">8. Data Hygiene</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush10">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading10">
-        <a href="09-create.html">9. Creating and Modifying Data</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush11">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading11">
-        <a href="10-prog.html">10. Programming with Databases - Python</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush12">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading12">
-        <a href="11-prog-R.html">11. Programming with Databases - R</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
                 </div>
               </div>
             </div>
@@ -296,7 +260,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Sorting and Removing Duplicates</h1>
-        <p> Last updated on 2023-10-04 | 
+        <p> Last updated on 2023-10-10 | 
         
         <a href="https://github.com/swcarpentry/sql-novice-survey/edit/main/episodes/02-sort-dup.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -333,142 +297,54 @@
 </div>
 </div>
 </div>
-<p>In beginning our examination of the Antarctic data, we want to
-know:</p>
-<ul><li>what kind of quantity measurements were taken at each site;</li>
-<li>which scientists took measurements on the expedition;</li>
-</ul><p>To determine which measurements were taken at each site, we can
-examine the <code>Survey</code> table. Data is often redundant, so
+<p>In beginning our examination of the GHCN Daily Weather Data, we want
+to know:</p>
+<ul><li>what kind of elements (observation types) were taken at each
+station;</li>
+<li>when did these observations occur;</li>
+</ul><p>To determine which kinds of observations were taken, we can examine
+the <code>Daily observations</code> table. Data is often redundant, so
 queries often return redundant information. For example, if we select
-the quantities that have been measured from the <code>Survey</code>
-table, we get this:</p>
+the observation types that have been measured from the
+<code>Daily observations</code> table, we get this:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> quant <span class="kw">FROM</span> Survey;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> element <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>quant</th>
-</tr></thead><tbody><tr class="odd"><td>rad</td>
-</tr><tr class="even"><td>sal</td>
-</tr><tr class="odd"><td>rad</td>
-</tr><tr class="even"><td>sal</td>
-</tr><tr class="odd"><td>rad</td>
-</tr><tr class="even"><td>sal</td>
-</tr><tr class="odd"><td>temp</td>
-</tr><tr class="even"><td>rad</td>
-</tr><tr class="odd"><td>sal</td>
-</tr><tr class="even"><td>temp</td>
-</tr><tr class="odd"><td>rad</td>
-</tr><tr class="even"><td>temp</td>
-</tr><tr class="odd"><td>sal</td>
-</tr><tr class="even"><td>rad</td>
-</tr><tr class="odd"><td>sal</td>
-</tr><tr class="even"><td>temp</td>
-</tr><tr class="odd"><td>sal</td>
-</tr><tr class="even"><td>rad</td>
-</tr><tr class="odd"><td>sal</td>
-</tr><tr class="even"><td>sal</td>
-</tr><tr class="odd"><td>rad</td>
-</tr></tbody></table><p>This result makes it difficult to see all of the different types of
-<code>quant</code> in the Survey table. We can eliminate the redundant
-output to make the result more readable by adding the
-<code>DISTINCT</code> keyword to our query:</p>
+<figure><img src="../fig/03.1_select_element_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.2_select_element_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>This result makes it difficult to see all of the different types of
+<code>elements</code> in the <code>Daily observations</code> table. We
+can eliminate the redundant output to make the result more readable by
+adding the <code>DISTINCT</code> keyword to our query:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> quant <span class="kw">FROM</span> Survey;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> element <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>quant</th>
-</tr></thead><tbody><tr class="odd"><td>rad</td>
-</tr><tr class="even"><td>sal</td>
-</tr><tr class="odd"><td>temp</td>
-</tr></tbody></table><p>If we want to determine which visit (stored in the <code>taken</code>
-column) have which <code>quant</code> measurement, we can use the
+<figure><img src="../fig/03.3_select_element_distinct_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.4_select_element_distinct_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>If we want to determine the stations (represented by <code>id</code>)
+at which different observation types were recorded, we can use the
 <code>DISTINCT</code> keyword on multiple columns. If we select more
 than one column, distinct <em>sets</em> of values are returned (in this
 case <em>pairs</em>, because we are selecting two columns):</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> taken, quant <span class="kw">FROM</span> Survey;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="kw">id</span>, element <span class="kw">FROM</span>  _source_;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>taken</th>
-<th>quant</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>rad</td>
-</tr><tr class="even"><td>619</td>
-<td>sal</td>
-</tr><tr class="odd"><td>622</td>
-<td>rad</td>
-</tr><tr class="even"><td>622</td>
-<td>sal</td>
-</tr><tr class="odd"><td>734</td>
-<td>rad</td>
-</tr><tr class="even"><td>734</td>
-<td>sal</td>
-</tr><tr class="odd"><td>734</td>
-<td>temp</td>
-</tr><tr class="even"><td>735</td>
-<td>rad</td>
-</tr><tr class="odd"><td>735</td>
-<td>sal</td>
-</tr><tr class="even"><td>735</td>
-<td>temp</td>
-</tr><tr class="odd"><td>751</td>
-<td>rad</td>
-</tr><tr class="even"><td>751</td>
-<td>temp</td>
-</tr><tr class="odd"><td>751</td>
-<td>sal</td>
-</tr><tr class="even"><td>752</td>
-<td>rad</td>
-</tr><tr class="odd"><td>752</td>
-<td>sal</td>
-</tr><tr class="even"><td>752</td>
-<td>temp</td>
-</tr><tr class="odd"><td>837</td>
-<td>rad</td>
-</tr><tr class="even"><td>837</td>
-<td>sal</td>
-</tr><tr class="odd"><td>844</td>
-<td>rad</td>
-</tr></tbody></table><p>Notice in both cases that duplicates are removed even if the rows
-they come from didn’t appear to be adjacent in the database table.</p>
-<p>Our next task is to identify the scientists on the expedition by
-looking at the <code>Person</code> table. As we mentioned earlier,
-database records are not stored in any particular order. This means that
-query results aren’t necessarily sorted, and even if they are, we often
-want to sort them in a different way, e.g., by their identifier instead
-of by their personal name. We can do this in SQL by adding an
-<code>ORDER BY</code> clause to our query:</p>
+<figure><img src="../fig/03.5_two_distinct_variables_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.6_two_distinct_variables_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>Our next task is to identify when weather observations occurred. As
+we mentioned earlier, database records are not stored in any particular
+order. This means that query results aren’t necessarily sorted, and even
+if they are, we often want to sort them in a different way, e.g., by
+date. We can do this in SQL by adding an <code>ORDER BY</code> clause to
+our query:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Person <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">id</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>personal</th>
-<th>family</th>
-</tr></thead><tbody><tr class="odd"><td>danfort</td>
-<td>Frank</td>
-<td>Danforth</td>
-</tr><tr class="even"><td>dyer</td>
-<td>William</td>
-<td>Dyer</td>
-</tr><tr class="odd"><td>lake</td>
-<td>Anderson</td>
-<td>Lake</td>
-</tr><tr class="even"><td>pb</td>
-<td>Frank</td>
-<td>Pabodie</td>
-</tr><tr class="odd"><td>roe</td>
-<td>Valentina</td>
-<td>Roerich</td>
-</tr></tbody></table><p>By default, when we use <code>ORDER BY</code>, results are sorted in
+<figure><img src="../fig/03.7_order_by_date_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.8_order_by_date_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>By default, when we use <code>ORDER BY</code>, results are sorted in
 ascending order of the column we specify (i.e., from least to
 greatest).</p>
-<p>We can sort in the opposite order using <code>DESC</code> (for
-“descending”):</p>
 <div id="a-note-on-ordering" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -485,144 +361,55 @@ order.</p>
 </div>
 </div>
 </div>
+<div id="date-types" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="date-types" class="callout-inner">
+<h3 class="callout-title">Date Types<a class="anchor" aria-label="anchor" href="#date-types"></a>
+</h3>
+<div class="callout-content">
+<p>Most database managers have a special data type for dates. In fact,
+many have two: one for dates, such as “May 31, 1971”, and one for
+durations, such as “31 days”. Redivis stores <a href="https://docs.redivis.com/reference/datasets/tables/variables#date" class="external-link">Dates</a>
+and <a href="https://docs.redivis.com/reference/datasets/tables/variables#datetime" class="external-link">DateTimes</a>.
+The former is formatted as ‘YYYY-[M]M-[D]D’:</p>
+<ul><li>YYYY: Four digit year</li>
+<li>[M]M: One or two digit month</li>
+<li>[D]D: One or two digit day</li>
+</ul><p>The latter is formatted as ‘YYYY-[M]M-[D]D[(
+|T)[H]H:[M]M:[S]S[.DDDDDD]]’:</p>
+<ul><li>YYYY: Four digit year</li>
+<li>[M]M: One or two digit month</li>
+<li>[D]D: One or two digit day</li>
+<li>( |T): A space or a Tseparator</li>
+<li>[H]H: One or two digit hour (valid values from 00 to 23)</li>
+<li>[M]M: One or two digit minutes (valid values from 00 to 59)</li>
+<li>[S]S: One or two digit seconds (valid values from 00 to 59)</li>
+<li>[.DDDDDD]: Up to six fractional digits (i.e. up to microsecond
+precision)</li>
+</ul></div>
+</div>
+</div>
+<p>We can sort in the opposite order using <code>DESC</code> (for
+“descending”):</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> person <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">id</span> <span class="kw">DESC</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span> <span class="kw">DESC</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>personal</th>
-<th>family</th>
-</tr></thead><tbody><tr class="odd"><td>roe</td>
-<td>Valentina</td>
-<td>Roerich</td>
-</tr><tr class="even"><td>pb</td>
-<td>Frank</td>
-<td>Pabodie</td>
-</tr><tr class="odd"><td>lake</td>
-<td>Anderson</td>
-<td>Lake</td>
-</tr><tr class="even"><td>dyer</td>
-<td>William</td>
-<td>Dyer</td>
-</tr><tr class="odd"><td>danfort</td>
-<td>Frank</td>
-<td>Danforth</td>
-</tr></tbody></table><p>(And if we want to make it clear that we’re sorting in ascending
+<figure><img src="../fig/03.9_order_by_date_desc_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.10_order_by_date_desc_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>(And if we want to make it clear that we’re sorting in ascending
 order, we can use <code>ASC</code> instead of <code>DESC</code>.)</p>
-<p>In order to look at which scientist measured quantities during each
-visit, we can look again at the <code>Survey</code> table. We can also
-sort on several fields at once. For example, this query sorts results
-first in ascending order by <code>taken</code>, and then in descending
-order by <code>person</code> within each group of equal
-<code>taken</code> values:</p>
+<p>If we want a more complete picture of when weather observations took
+place, we can sort on several fields at once. This query sorts results
+first in descending order by <code>date</code>, and then in ascending
+order by <code>time</code>:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> taken, person, quant <span class="kw">FROM</span> Survey <span class="kw">ORDER</span> <span class="kw">BY</span> taken <span class="kw">ASC</span>, person <span class="kw">DESC</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">id</span>, element, <span class="dt">date</span>, <span class="dt">time</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span> <span class="kw">DESC</span>, <span class="dt">time</span> <span class="kw">ASC</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>taken</th>
-<th>person</th>
-<th>quant</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>dyer</td>
-<td>rad</td>
-</tr><tr class="even"><td>619</td>
-<td>dyer</td>
-<td>sal</td>
-</tr><tr class="odd"><td>622</td>
-<td>dyer</td>
-<td>rad</td>
-</tr><tr class="even"><td>622</td>
-<td>dyer</td>
-<td>sal</td>
-</tr><tr class="odd"><td>734</td>
-<td>pb</td>
-<td>rad</td>
-</tr><tr class="even"><td>734</td>
-<td>pb</td>
-<td>temp</td>
-</tr><tr class="odd"><td>734</td>
-<td>lake</td>
-<td>sal</td>
-</tr><tr class="even"><td>735</td>
-<td>pb</td>
-<td>rad</td>
-</tr><tr class="odd"><td>735</td>
-<td>-null-</td>
-<td>sal</td>
-</tr><tr class="even"><td>735</td>
-<td>-null-</td>
-<td>temp</td>
-</tr><tr class="odd"><td>751</td>
-<td>pb</td>
-<td>rad</td>
-</tr><tr class="even"><td>751</td>
-<td>pb</td>
-<td>temp</td>
-</tr><tr class="odd"><td>751</td>
-<td>lake</td>
-<td>sal</td>
-</tr><tr class="even"><td>752</td>
-<td>roe</td>
-<td>sal</td>
-</tr><tr class="odd"><td>752</td>
-<td>lake</td>
-<td>rad</td>
-</tr><tr class="even"><td>752</td>
-<td>lake</td>
-<td>sal</td>
-</tr><tr class="odd"><td>752</td>
-<td>lake</td>
-<td>temp</td>
-</tr><tr class="even"><td>837</td>
-<td>roe</td>
-<td>sal</td>
-</tr><tr class="odd"><td>837</td>
-<td>lake</td>
-<td>rad</td>
-</tr><tr class="even"><td>837</td>
-<td>lake</td>
-<td>sal</td>
-</tr><tr class="odd"><td>844</td>
-<td>roe</td>
-<td>rad</td>
-</tr></tbody></table><p>This query gives us a good idea of which scientist was involved in
-which visit, and what measurements they performed during the visit.</p>
-<p>Looking at the table, it seems like some scientists specialized in
-certain kinds of measurements. We can examine which scientists performed
-which measurements by selecting the appropriate columns and removing
-duplicates.</p>
-<div class="codewrapper sourceCode" id="cb7">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> quant, person <span class="kw">FROM</span> Survey <span class="kw">ORDER</span> <span class="kw">BY</span> quant <span class="kw">ASC</span>;</span></code></pre>
-</div>
-<table class="table"><thead><tr class="header"><th>quant</th>
-<th>person</th>
-</tr></thead><tbody><tr class="odd"><td>rad</td>
-<td>dyer</td>
-</tr><tr class="even"><td>rad</td>
-<td>pb</td>
-</tr><tr class="odd"><td>rad</td>
-<td>lake</td>
-</tr><tr class="even"><td>rad</td>
-<td>roe</td>
-</tr><tr class="odd"><td>sal</td>
-<td>dyer</td>
-</tr><tr class="even"><td>sal</td>
-<td>lake</td>
-</tr><tr class="odd"><td>sal</td>
-<td>-null-</td>
-</tr><tr class="even"><td>sal</td>
-<td>roe</td>
-</tr><tr class="odd"><td>temp</td>
-<td>pb</td>
-</tr><tr class="even"><td>temp</td>
-<td>-null-</td>
-</tr><tr class="odd"><td>temp</td>
-<td>lake</td>
-</tr></tbody></table><div id="finding-distinct-dates" class="callout challenge">
+<figure><img src="../fig/03.11_order_by_date_time_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.12_order_by_date_time_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div id="finding-distinct-dates" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
@@ -631,7 +418,7 @@ duplicates.</p>
 </h3>
 <div class="callout-content">
 <p>Write a query that selects distinct dates from the
-<code>Visited</code> table.</p>
+<code>Daily observations</code> table.</p>
 </div>
 </div>
 </div>
@@ -644,34 +431,26 @@ duplicates.</p>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> dated <span class="kw">FROM</span> Visited;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="dt">date</span> <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>1927-02-08</td>
-</tr><tr class="even"><td>1927-02-10</td>
-</tr><tr class="odd"><td>1930-01-07</td>
-</tr><tr class="even"><td>1930-01-12</td>
-</tr><tr class="odd"><td>1930-02-26</td>
-</tr><tr class="even"><td> </td>
-</tr><tr class="odd"><td>1932-01-14</td>
-</tr><tr class="even"><td>1932-03-22</td>
-</tr></tbody></table></div>
+<figure><img src="../fig/03.13_distinct_dates_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.14_distinct_dates_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure></div>
 </div>
 </div>
 </div>
-<div id="displaying-full-names" class="callout challenge">
+<div id="displaying-station-names-and-locations" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="displaying-full-names" class="callout-inner">
-<h3 class="callout-title">Displaying Full Names<a class="anchor" aria-label="anchor" href="#displaying-full-names"></a>
+<div id="displaying-station-names-and-locations" class="callout-inner">
+<h3 class="callout-title">Displaying Station Names and Locations<a class="anchor" aria-label="anchor" href="#displaying-station-names-and-locations"></a>
 </h3>
 <div class="callout-content">
-<p>Write a query that displays the full names of the scientists in the
-<code>Person</code> table, ordered by family name.</p>
+<p>Using the <code>Stations</code> table, write a query that displays
+the names of stations and the states where they are located. The output
+should be sorted alphabetically first by state, and then by name.</p>
 </div>
 </div>
 </div>
@@ -684,24 +463,12 @@ duplicates.</p>
 </button>
 <div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> personal, family <span class="kw">FROM</span> Person <span class="kw">ORDER</span> <span class="kw">BY</span> family <span class="kw">ASC</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> state, name <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> state <span class="kw">ASC</span>, name <span class="kw">ASC</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>personal</th>
-<th>family</th>
-</tr></thead><tbody><tr class="odd"><td>Frank</td>
-<td>Danforth</td>
-</tr><tr class="even"><td>William</td>
-<td>Dyer</td>
-</tr><tr class="odd"><td>Anderson</td>
-<td>Lake</td>
-</tr><tr class="even"><td>Frank</td>
-<td>Pabodie</td>
-</tr><tr class="odd"><td>Valentina</td>
-<td>Roerich</td>
-</tr></tbody></table></div>
+<figure><img src="../fig/03.15_alphabetical_name_state_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.16_alphabetical_name_state_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure></div>
 </div>
 </div>
 </div>
@@ -784,7 +551,7 @@ DISTINCT.</li>
   "url": "https://swcarpentry.github.io/sql-novice-survey/instructor/02-sort-dup.html",
   "identifier": "https://swcarpentry.github.io/sql-novice-survey/instructor/02-sort-dup.html",
   "dateCreated": "2014-11-21",
-  "dateModified": "2023-10-04",
+  "dateModified": "2023-10-10",
   "datePublished": "2023-10-10"
 }
 

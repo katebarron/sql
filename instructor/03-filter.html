@@ -77,11 +77,11 @@
   SQL Queries in Redivis
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 12%" class="percentage">
-    12%
+<aside class="col-md-12 lesson-progress"><div style="width: 23%" class="percentage">
+    23%
   </div>
   <div class="progress software">
-    <div class="progress-bar software" role="progressbar" style="width: 12%" aria-valuenow="12" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar software" role="progressbar" style="width: 23%" aria-valuenow="23" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -202,42 +202,6 @@
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
-<div class="accordion accordion-flush" id="accordionFlush9">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading9">
-        <a href="08-hygiene.html">8. Data Hygiene</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush10">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading10">
-        <a href="09-create.html">9. Creating and Modifying Data</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush11">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading11">
-        <a href="10-prog.html">10. Programming with Databases - Python</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush12">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading12">
-        <a href="11-prog-R.html">11. Programming with Databases - R</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
                 </div>
               </div>
             </div>
@@ -296,7 +260,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Filtering</h1>
-        <p> Last updated on 2023-10-04 | 
+        <p> Last updated on 2023-10-10 | 
         
         <a href="https://github.com/swcarpentry/sql-novice-survey/edit/main/episodes/03-filter.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -335,28 +299,16 @@ conditions.</li>
 </div>
 <p>One of the most powerful features of a database is the ability to <a href="reference.html#filter">filter</a> data, i.e., to select only those
 records that match certain criteria. For example, suppose we want to see
-when a particular site was visited. We can select these records from the
-<code>Visited</code> table by using a <code>WHERE</code> clause in our
+all of the stations in Texas. We can select these records from the
+<code>Stations</code> table by using a <code>WHERE</code> clause in our
 query:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> site <span class="op">=</span> <span class="st">'DR-1'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> state <span class="op">=</span> <span class="st">'TX'</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>site</th>
-<th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>DR-1</td>
-<td>1927-02-08</td>
-</tr><tr class="even"><td>622</td>
-<td>DR-1</td>
-<td>1927-02-10</td>
-</tr><tr class="odd"><td>844</td>
-<td>DR-1</td>
-<td>1932-03-22</td>
-</tr></tbody></table><p>The database manager executes this query in two stages. First, it
-checks at each row in the <code>Visited</code> table to see which ones
+<figure><img src="../fig/04.1_where_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/04.2_where_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>The database manager executes this query in two stages. First, it
+checks at each row in the <code>Station</code> table to see which ones
 satisfy the <code>WHERE</code>. It then uses the column names following
 the <code>SELECT</code> keyword to determine which columns to
 display.</p>
@@ -366,281 +318,65 @@ displayed:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">id</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> site <span class="op">=</span> <span class="st">'DR-1'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">id</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> state <span class="op">=</span> <span class="st">'TX'</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>id</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-</tr><tr class="even"><td>622</td>
-</tr><tr class="odd"><td>844</td>
-</tr></tbody></table><figure><img src="../fig/sql-filter.svg" alt="SQL Filtering in Action" class="figure mx-auto d-block"></figure><p>We can use many other Boolean operators to filter our data. For
-example, we can ask for all information from the DR-1 site collected
-before 1930:</p>
+<figure><img src="../fig/04.3_where_column_values_not_displayed_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/04.4_where_column_values_not_displayed_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>We can use many other Boolean operators to filter our data. For
+example, we can ask for all information from the stations at elevations
+less than 50 meters:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> site <span class="op">=</span> <span class="st">'DR-1'</span> <span class="kw">AND</span> dated <span class="op">&lt;</span> <span class="st">'1930-01-01'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_  <span class="kw">WHERE</span> state <span class="op">=</span> <span class="st">'TX'</span> <span class="kw">AND</span> elevation <span class="op">&lt;</span> <span class="dv">50</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>site</th>
-<th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>DR-1</td>
-<td>1927-02-08</td>
-</tr><tr class="even"><td>622</td>
-<td>DR-1</td>
-<td>1927-02-10</td>
-</tr></tbody></table><div id="date-types" class="callout callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<div id="date-types" class="callout-inner">
-<h3 class="callout-title">Date Types<a class="anchor" aria-label="anchor" href="#date-types"></a>
-</h3>
-<div class="callout-content">
-<p>Most database managers have a special data type for dates. In fact,
-many have two: one for dates, such as “May 31, 1971”, and one for
-durations, such as “31 days”. SQLite doesn’t: instead, it stores dates
-as either text (in the ISO-8601 standard format “YYYY-MM-DD
-HH:MM:SS.SSSS”), real numbers (<a href="https://en.wikipedia.org/wiki/Julian_day" class="external-link">Julian days</a>, the
-number of days since November 24, 4714 BCE), or integers (<a href="https://en.wikipedia.org/wiki/Unix_time" class="external-link">Unix time</a>, the number
-of seconds since midnight, January 1, 1970). If this sounds complicated,
-it is, but not nearly as complicated as figuring out <a href="https://en.wikipedia.org/wiki/Swedish_calendar" class="external-link">historical dates
-in Sweden</a>.</p>
-</div>
-</div>
-</div>
-<p>If we want to find out what measurements were taken by either Lake or
-Roerich, we can combine the tests on their names using
-<code>OR</code>:</p>
+<figure><img src="../fig/04.5_where_other_bools_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/04.6_where_other_bools_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>If we want to find stations in either Texas or Oklahoma, we can
+combine the tests on their names using <code>OR</code>:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> person <span class="op">=</span> <span class="st">'lake'</span> <span class="kw">OR</span> person <span class="op">=</span> <span class="st">'roe'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_  <span class="kw">WHERE</span> state <span class="op">=</span> <span class="st">'TX'</span> <span class="kw">OR</span> state <span class="op">=</span> <span class="st">'OK'</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>taken</th>
-<th>person</th>
-<th>quant</th>
-<th>reading</th>
-</tr></thead><tbody><tr class="odd"><td>734</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.05</td>
-</tr><tr class="even"><td>751</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.1</td>
-</tr><tr class="odd"><td>752</td>
-<td>lake</td>
-<td>rad</td>
-<td>2.19</td>
-</tr><tr class="even"><td>752</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.09</td>
-</tr><tr class="odd"><td>752</td>
-<td>lake</td>
-<td>temp</td>
-<td>-16.0</td>
-</tr><tr class="even"><td>752</td>
-<td>roe</td>
-<td>sal</td>
-<td>41.6</td>
-</tr><tr class="odd"><td>837</td>
-<td>lake</td>
-<td>rad</td>
-<td>1.46</td>
-</tr><tr class="even"><td>837</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.21</td>
-</tr><tr class="odd"><td>837</td>
-<td>roe</td>
-<td>sal</td>
-<td>22.5</td>
-</tr><tr class="even"><td>844</td>
-<td>roe</td>
-<td>rad</td>
-<td>11.25</td>
-</tr></tbody></table><p>Alternatively, we can use <code>IN</code> to see if a value is in a
+<figure><img src="../fig/04.7_where_or_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/04.8_where_or_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>Alternatively, we can use <code>IN</code> to see if a value is in a
 specific set:</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> person <span class="kw">IN</span> (<span class="st">'lake'</span>, <span class="st">'roe'</span>);</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_  <span class="kw">WHERE</span> state <span class="kw">IN</span> (<span class="st">'TX'</span>, <span class="st">'OK'</span>);</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>taken</th>
-<th>person</th>
-<th>quant</th>
-<th>reading</th>
-</tr></thead><tbody><tr class="odd"><td>734</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.05</td>
-</tr><tr class="even"><td>751</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.1</td>
-</tr><tr class="odd"><td>752</td>
-<td>lake</td>
-<td>rad</td>
-<td>2.19</td>
-</tr><tr class="even"><td>752</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.09</td>
-</tr><tr class="odd"><td>752</td>
-<td>lake</td>
-<td>temp</td>
-<td>-16.0</td>
-</tr><tr class="even"><td>752</td>
-<td>roe</td>
-<td>sal</td>
-<td>41.6</td>
-</tr><tr class="odd"><td>837</td>
-<td>lake</td>
-<td>rad</td>
-<td>1.46</td>
-</tr><tr class="even"><td>837</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.21</td>
-</tr><tr class="odd"><td>837</td>
-<td>roe</td>
-<td>sal</td>
-<td>22.5</td>
-</tr><tr class="even"><td>844</td>
-<td>roe</td>
-<td>rad</td>
-<td>11.25</td>
-</tr></tbody></table><p>We can combine <code>AND</code> with <code>OR</code>, but we need to
+<figure><img src="../fig/04.9_where_set_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/04.10_where_set_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>We can combine <code>AND</code> with <code>OR</code>, but we need to
 be careful about which operator is executed first. If we <em>don’t</em>
 use parentheses, we get this:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'sal'</span> <span class="kw">AND</span> person <span class="op">=</span> <span class="st">'lake'</span> <span class="kw">OR</span> person <span class="op">=</span> <span class="st">'roe'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> elevation <span class="op">&lt;</span> <span class="dv">50</span> <span class="kw">AND</span> state <span class="op">=</span> <span class="st">'TX'</span> <span class="kw">OR</span> state <span class="op">=</span> <span class="st">'OK'</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>taken</th>
-<th>person</th>
-<th>quant</th>
-<th>reading</th>
-</tr></thead><tbody><tr class="odd"><td>734</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.05</td>
-</tr><tr class="even"><td>751</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.1</td>
-</tr><tr class="odd"><td>752</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.09</td>
-</tr><tr class="even"><td>752</td>
-<td>roe</td>
-<td>sal</td>
-<td>41.6</td>
-</tr><tr class="odd"><td>837</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.21</td>
-</tr><tr class="even"><td>837</td>
-<td>roe</td>
-<td>sal</td>
-<td>22.5</td>
-</tr><tr class="odd"><td>844</td>
-<td>roe</td>
-<td>rad</td>
-<td>11.25</td>
-</tr></tbody></table><p>which is salinity measurements by Lake, and <em>any</em> measurement
-by Roerich. We probably want this instead:</p>
+<p>which is stations from Texas at less than 50 meters elevation, and
+<em>any</em> stations from Oklahoma.</p>
+<figure><img src="../fig/04.11_where_incorrect_logic.query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/04.12_where_incorrect_logic.output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>We probably want this instead:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'sal'</span> <span class="kw">AND</span> (person <span class="op">=</span> <span class="st">'lake'</span> <span class="kw">OR</span> person <span class="op">=</span> <span class="st">'roe'</span>);</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> elevation <span class="op">&lt;</span> <span class="dv">50</span> <span class="kw">AND</span> (state <span class="op">=</span> <span class="st">'TX'</span> <span class="kw">OR</span> state <span class="op">=</span> <span class="st">'OK'</span>);</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>taken</th>
-<th>person</th>
-<th>quant</th>
-<th>reading</th>
-</tr></thead><tbody><tr class="odd"><td>734</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.05</td>
-</tr><tr class="even"><td>751</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.1</td>
-</tr><tr class="odd"><td>752</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.09</td>
-</tr><tr class="even"><td>752</td>
-<td>roe</td>
-<td>sal</td>
-<td>41.6</td>
-</tr><tr class="odd"><td>837</td>
-<td>lake</td>
-<td>sal</td>
-<td>0.21</td>
-</tr><tr class="even"><td>837</td>
-<td>roe</td>
-<td>sal</td>
-<td>22.5</td>
-</tr></tbody></table><p>We can also filter by partial matches. For example, if we want to
-know something just about the site names beginning with “DR” we can use
+<figure><img src="../fig/04.13_where_correct_logic_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/04.14_where_correct_logic_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>We can also filter by partial matches. For example, if we want to
+know something just about the station ids beginning with “MD” we can use
 the <code>LIKE</code> keyword. The percent symbol acts as a <a href="reference.html#wildcard">wildcard</a>, matching any characters in
 that place. It can be used at the beginning, middle, or end of the
 string:</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> site <span class="kw">LIKE</span> <span class="st">'DR%'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="kw">id</span> <span class="kw">LIKE</span> <span class="st">'MD%'</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>site</th>
-<th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>DR-1</td>
-<td>1927-02-08</td>
-</tr><tr class="even"><td>622</td>
-<td>DR-1</td>
-<td>1927-02-10</td>
-</tr><tr class="odd"><td>734</td>
-<td>DR-3</td>
-<td>1930-01-07</td>
-</tr><tr class="even"><td>735</td>
-<td>DR-3</td>
-<td>1930-01-12</td>
-</tr><tr class="odd"><td>751</td>
-<td>DR-3</td>
-<td>1930-02-26</td>
-</tr><tr class="even"><td>752</td>
-<td>DR-3</td>
-<td></td>
-</tr><tr class="odd"><td>844</td>
-<td>DR-1</td>
-<td>1932-03-22</td>
-</tr></tbody></table><p>Finally, we can use <code>DISTINCT</code> with <code>WHERE</code> to
-give a second level of filtering:</p>
+<figure><img src="../fig/04.15_where_like_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/04.16_where_like_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>Finally, we can use <code>DISTINCT</code> with <code>WHERE</code> to
+give a second level of filtering. Let’s look at an example using the
+<code>Daily observations</code> table :</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> person, quant <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> person <span class="op">=</span> <span class="st">'lake'</span> <span class="kw">OR</span> person <span class="op">=</span> <span class="st">'roe'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="kw">id</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'SNOW'</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>person</th>
-<th>quant</th>
-</tr></thead><tbody><tr class="odd"><td>lake</td>
-<td>sal</td>
-</tr><tr class="even"><td>lake</td>
-<td>rad</td>
-</tr><tr class="odd"><td>lake</td>
-<td>temp</td>
-</tr><tr class="even"><td>roe</td>
-<td>sal</td>
-</tr><tr class="odd"><td>roe</td>
-<td>rad</td>
-</tr></tbody></table><p>But remember: <code>DISTINCT</code> is applied to the values
+<figure><img src="../fig/04.17_where_distinct_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/04.18_where_distinct_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>But remember: <code>DISTINCT</code> is applied to the values
 displayed in the chosen columns, not to the entire rows as they are
 being processed.</p>
 <div id="growing-queries" class="callout callout">
@@ -675,12 +411,12 @@ that.</p>
 <h3 class="callout-title">Fix This Query<a class="anchor" aria-label="anchor" href="#fix-this-query"></a>
 </h3>
 <div class="callout-content">
-<p>Suppose we want to select all sites that lie within 48 degrees of the
-equator. Our first query is:</p>
+<p>Suppose we want to select all stations that lie within 30 degrees of
+the equator. Our first query is:</p>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Site <span class="kw">WHERE</span> (lat <span class="op">&gt;</span> <span class="op">-</span><span class="dv">48</span>) <span class="kw">OR</span> (lat <span class="op">&lt;</span> <span class="dv">48</span>);</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_  <span class="kw">WHERE</span> (latitude <span class="op">&gt;</span> <span class="op">-</span><span class="dv">30</span>) <span class="kw">OR</span> (latitude <span class="op">&lt;</span> <span class="dv">30</span>);</span></code></pre>
 </div>
 <p>Explain why this is wrong, and rewrite the query so that it is
 correct.</p>
@@ -694,7 +430,7 @@ correct.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Because we used <code>OR</code>, a site on the South Pole for example
 will still meet the second criteria and thus be included. Instead, we
@@ -702,7 +438,7 @@ want to restrict this to sites that meet <em>both</em> criteria:</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Site <span class="kw">WHERE</span> (lat <span class="op">&gt;</span> <span class="op">-</span><span class="dv">48</span>) <span class="kw">AND</span> (lat <span class="op">&lt;</span> <span class="dv">48</span>);</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_  <span class="kw">WHERE</span> (latitude <span class="op">&gt;</span> <span class="op">-</span><span class="dv">30</span>) <span class="kw">AND</span> (latitude <span class="op">&lt;</span> <span class="dv">30</span>);</span></code></pre>
 </div>
 </div>
 </div>
@@ -716,9 +452,13 @@ want to restrict this to sites that meet <em>both</em> criteria:</p>
 <h3 class="callout-title">Finding Outliers<a class="anchor" aria-label="anchor" href="#finding-outliers"></a>
 </h3>
 <div class="callout-content">
-<p>Normalized salinity readings are supposed to be between 0.0 and 1.0.
-Write a query that selects all records from <code>Survey</code> with
-salinity values outside this range.</p>
+<p>We see that some observations have negative values. Let’s make sure
+these are not incorrect data. Using the the
+<code>Daily observations</code> table, write a query that selects unique
+observations with values less than 0. Then, look up these observation
+types in the <a href="https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/doc/GHCND_documentation.pdf" class="external-link">GHCND
+Documentation</a>. Is it possible for these observation types to have
+negative values?</p>
 </div>
 </div>
 </div>
@@ -729,26 +469,32 @@ salinity values outside this range.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'sal'</span> <span class="kw">AND</span> ((reading <span class="op">&gt;</span> <span class="fl">1.0</span>) <span class="kw">OR</span> (reading <span class="op">&lt;</span> <span class="fl">0.0</span>));</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> element <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="fu">value</span> <span class="op">&lt;</span> <span class="dv">0</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>taken</th>
-<th>person</th>
-<th>quant</th>
-<th>reading</th>
-</tr></thead><tbody><tr class="odd"><td>752</td>
-<td>roe</td>
-<td>sal</td>
-<td>41.6</td>
-</tr><tr class="even"><td>837</td>
-<td>roe</td>
-<td>sal</td>
-<td>22.5</td>
-</tr></tbody></table></div>
+<table class="table"><thead><tr class="header"><th>element</th>
+</tr></thead><tbody><tr class="odd"><td>TAVG</td>
+</tr><tr class="even"><td>SX32</td>
+</tr><tr class="odd"><td>SN52</td>
+</tr><tr class="even"><td>TMIN</td>
+</tr><tr class="odd"><td>SX02</td>
+</tr><tr class="even"><td>SN32</td>
+</tr><tr class="odd"><td>MNPN</td>
+</tr><tr class="even"><td>TMAX</td>
+</tr><tr class="odd"><td>EVAP</td>
+</tr><tr class="even"><td>TOBS</td>
+</tr><tr class="odd"><td>MXPN</td>
+</tr><tr class="even"><td>DAPR</td>
+</tr><tr class="odd"><td>MDTN</td>
+</tr><tr class="even"><td>SN02</td>
+</tr></tbody></table><p>At least for some of these observations, negative values seem
+possible. For example, TOBS is temperature at the time of observation.
+Temperatures can in fact be negative.</p>
+</div>
 </div>
 </div>
 </div>
@@ -776,7 +522,7 @@ salinity values outside this range.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>True because these are the same character.</li>
 <li>True because the wildcard can match <em>zero</em> or more
@@ -870,7 +616,7 @@ that are not actually displayed.</li>
   "url": "https://swcarpentry.github.io/sql-novice-survey/instructor/03-filter.html",
   "identifier": "https://swcarpentry.github.io/sql-novice-survey/instructor/03-filter.html",
   "dateCreated": "2014-11-21",
-  "dateModified": "2023-10-04",
+  "dateModified": "2023-10-10",
   "datePublished": "2023-10-10"
 }
 

@@ -77,11 +77,11 @@
   SQL Queries in Redivis
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 22%" class="percentage">
-    22%
+<aside class="col-md-12 lesson-progress"><div style="width: 42%" class="percentage">
+    42%
   </div>
   <div class="progress software">
-    <div class="progress-bar software" role="progressbar" style="width: 22%" aria-valuenow="22" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar software" role="progressbar" style="width: 42%" aria-valuenow="42" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -202,42 +202,6 @@
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
-<div class="accordion accordion-flush" id="accordionFlush9">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading9">
-        <a href="08-hygiene.html">8. Data Hygiene</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush10">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading10">
-        <a href="09-create.html">9. Creating and Modifying Data</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush11">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading11">
-        <a href="10-prog.html">10. Programming with Databases - Python</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush12">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading12">
-        <a href="11-prog-R.html">11. Programming with Databases - R</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
                 </div>
               </div>
             </div>
@@ -296,7 +260,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Missing Data</h1>
-        <p> Last updated on 2023-10-04 | 
+        <p> Last updated on 2023-10-10 | 
         
         <a href="https://github.com/swcarpentry/sql-novice-survey/edit/main/episodes/05-null.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -341,226 +305,70 @@ represent these holes using a special value called <code>null</code>.
 it is a one-of-a-kind value that means “nothing here”. Dealing with
 <code>null</code> requires a few special tricks and some careful
 thinking.</p>
-<p>By default, SQLite does not display NULL values in its output. The
-<code>.nullvalue</code> command causes SQLite to display the value you
-specify for NULLs. We will use the value <code>-null-</code> to make the
-NULLs easier to see:</p>
+<p>To start, let’s have a look at the <code>Daily observations</code>
+table. If you look at the <code>time</code> variable frequency table,
+there are 20,264,371 <code>null</code> values.</p>
+<figure><img src="../fig/06.1_time_nulls.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>Null doesn’t behave like other values. If we select the records that
+are less than “1200” we get 3,400,669 results.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>.nullvalue <span class="op">-</span><span class="kw">null</span><span class="op">-</span></span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">from</span> _source_ <span class="kw">where</span> <span class="dt">time</span> <span class="op">&lt;</span> <span class="ot">"1200"</span>;</span></code></pre>
 </div>
-<p>To start, let’s have a look at the <code>Visited</code> table. There
-are eight records, but #752 doesn’t have a date — or rather, its date is
-null:</p>
+<figure><img src="../fig/06.2_time_less_than_1200_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/06.3_time_less_than_1200_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>If we select the records that are greater than or equal to “1200” we
+get 2,809,928 results.</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">from</span> _source_ <span class="kw">where</span> <span class="dt">time</span> <span class="op">&gt;=</span> <span class="ot">"1200"</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>site</th>
-<th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>DR-1</td>
-<td>1927-02-08</td>
-</tr><tr class="even"><td>622</td>
-<td>DR-1</td>
-<td>1927-02-10</td>
-</tr><tr class="odd"><td>734</td>
-<td>DR-3</td>
-<td>1930-01-07</td>
-</tr><tr class="even"><td>735</td>
-<td>DR-3</td>
-<td>1930-01-12</td>
-</tr><tr class="odd"><td>751</td>
-<td>DR-3</td>
-<td>1930-02-26</td>
-</tr><tr class="even"><td>752</td>
-<td>DR-3</td>
-<td>-null-</td>
-</tr><tr class="odd"><td>837</td>
-<td>MSK-4</td>
-<td>1932-01-14</td>
-</tr><tr class="even"><td>844</td>
-<td>DR-1</td>
-<td>1932-03-22</td>
-</tr></tbody></table><p>Null doesn’t behave like other values. If we select the records that
-come before 1930:</p>
+<figure><img src="../fig/06.4_time_greater_than_1200_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/06.5_time_greater_than_1200_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>Why aren’t the <code>null</code> values appearing in the results
+sets? The reason is that <code>null&lt;'1200'</code> and
+<code>null&gt;='1200'</code> are neither true nor false: null means, “We
+don’t know,” and if we don’t know the value on the left side of a
+comparison, we don’t know whether the comparison is true or false. Since
+databases represent “don’t know” as <code>null</code>, the values of
+<code>null&lt;'1200'</code> and <code>null&gt;='1200'</code> are both
+<code>null</code>. And since the only records kept by a
+<code>WHERE</code> are those for which the test is true, the
+<code>null</code> values aren’t included in either set of results.</p>
+<p>To check whether a value is <code>null</code> or not, we must use a
+special test <code>IS NULL</code>:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="op">&lt;</span> <span class="st">'1930-01-01'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>site</th>
-<th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>DR-1</td>
-<td>1927-02-08</td>
-</tr><tr class="even"><td>622</td>
-<td>DR-1</td>
-<td>1927-02-10</td>
-</tr></tbody></table><p>we get two results, and if we select the ones that come during or
-after 1930:</p>
+<figure><img src="../fig/06.6_is_null_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/06.7_is_null_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>or its inverse <code>IS NOT NULL</code>:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="op">&gt;=</span> <span class="st">'1930-01-01'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>site</th>
-<th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>734</td>
-<td>DR-3</td>
-<td>1930-01-07</td>
-</tr><tr class="even"><td>735</td>
-<td>DR-3</td>
-<td>1930-01-12</td>
-</tr><tr class="odd"><td>751</td>
-<td>DR-3</td>
-<td>1930-02-26</td>
-</tr><tr class="even"><td>837</td>
-<td>MSK-4</td>
-<td>1932-01-14</td>
-</tr><tr class="odd"><td>844</td>
-<td>DR-1</td>
-<td>1932-03-22</td>
-</tr></tbody></table><p>we get five, but record #752 isn’t in either set of results. The
-reason is that <code>null&lt;'1930-01-01'</code> is neither true nor
-false: null means, “We don’t know,” and if we don’t know the value on
-the left side of a comparison, we don’t know whether the comparison is
-true or false. Since databases represent “don’t know” as null, the value
-of <code>null&lt;'1930-01-01'</code> is actually <code>null</code>.
-<code>null&gt;='1930-01-01'</code> is also null because we can’t answer
-to that question either. And since the only records kept by a
-<code>WHERE</code> are those for which the test is true, record #752
-isn’t included in either set of results.</p>
-<p>Comparisons aren’t the only operations that behave this way with
-nulls. <code>1+null</code> is <code>null</code>, <code>5*null</code> is
-<code>null</code>, <code>log(null)</code> is <code>null</code>, and so
-on. In particular, comparing things to null with = and != produces
-null:</p>
+<figure><img src="../fig/06.8_is_not_null_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/06.9_is_not_null_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>Null values can cause headaches wherever they appear. For example,
+suppose we want to find all the measurements except for those taken at
+“2400.” It’s natural to write the query like this:</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="op">=</span> <span class="kw">NULL</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="op">!=</span> <span class="st">'2400'</span>;</span></code></pre>
 </div>
-<p>produces no output, and neither does:</p>
+<p>but this query filters omits the records where the time is unknown
+(or <code>null</code>). Once again, the reason is that when
+<code>time</code> is <code>null</code>, the <code>!=</code> comparison
+produces <code>null</code>, so the <code>null</code> records aren’t kept
+in our results.</p>
+<figure><img src="../fig/06.10_time_is_not_2400_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/06.11_time_is_not_2400_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>If we want to keep these records we need to add an explicit
+check:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="op">!=</span> <span class="kw">NULL</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> (<span class="dt">time</span> <span class="op">!=</span> <span class="st">'2400'</span> <span class="kw">OR</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NULL</span>);</span></code></pre>
 </div>
-<p>To check whether a value is <code>null</code> or not, we must use a
-special test <code>IS NULL</code>:</p>
-<div class="codewrapper sourceCode" id="cb7">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
-</div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>site</th>
-<th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>752</td>
-<td>DR-3</td>
-<td>-null-</td>
-</tr></tbody></table><p>or its inverse <code>IS NOT NULL</code>:</p>
-<div class="codewrapper sourceCode" id="cb8">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre>
-</div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>site</th>
-<th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>DR-1</td>
-<td>1927-02-08</td>
-</tr><tr class="even"><td>622</td>
-<td>DR-1</td>
-<td>1927-02-10</td>
-</tr><tr class="odd"><td>734</td>
-<td>DR-3</td>
-<td>1930-01-07</td>
-</tr><tr class="even"><td>735</td>
-<td>DR-3</td>
-<td>1930-01-12</td>
-</tr><tr class="odd"><td>751</td>
-<td>DR-3</td>
-<td>1930-02-26</td>
-</tr><tr class="even"><td>837</td>
-<td>MSK-4</td>
-<td>1932-01-14</td>
-</tr><tr class="odd"><td>844</td>
-<td>DR-1</td>
-<td>1932-03-22</td>
-</tr></tbody></table><p>Null values can cause headaches wherever they appear. For example,
-suppose we want to find all the salinity measurements that weren’t taken
-by Lake. It’s natural to write the query like this:</p>
-<div class="codewrapper sourceCode" id="cb9">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'sal'</span> <span class="kw">AND</span> person <span class="op">!=</span> <span class="st">'lake'</span>;</span></code></pre>
-</div>
-<table class="table"><thead><tr class="header"><th>taken</th>
-<th>person</th>
-<th>quant</th>
-<th>reading</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>dyer</td>
-<td>sal</td>
-<td>0.13</td>
-</tr><tr class="even"><td>622</td>
-<td>dyer</td>
-<td>sal</td>
-<td>0.09</td>
-</tr><tr class="odd"><td>752</td>
-<td>roe</td>
-<td>sal</td>
-<td>41.6</td>
-</tr><tr class="even"><td>837</td>
-<td>roe</td>
-<td>sal</td>
-<td>22.5</td>
-</tr></tbody></table><p>but this query filters omits the records where we don’t know who took
-the measurement. Once again, the reason is that when <code>person</code>
-is <code>null</code>, the <code>!=</code> comparison produces
-<code>null</code>, so the record isn’t kept in our results. If we want
-to keep these records we need to add an explicit check:</p>
-<div class="codewrapper sourceCode" id="cb10">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'sal'</span> <span class="kw">AND</span> (person <span class="op">!=</span> <span class="st">'lake'</span> <span class="kw">OR</span> person <span class="kw">IS</span> <span class="kw">NULL</span>);</span></code></pre>
-</div>
-<table class="table"><thead><tr class="header"><th>taken</th>
-<th>person</th>
-<th>quant</th>
-<th>reading</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>dyer</td>
-<td>sal</td>
-<td>0.13</td>
-</tr><tr class="even"><td>622</td>
-<td>dyer</td>
-<td>sal</td>
-<td>0.09</td>
-</tr><tr class="odd"><td>735</td>
-<td>-null-</td>
-<td>sal</td>
-<td>0.06</td>
-</tr><tr class="even"><td>752</td>
-<td>roe</td>
-<td>sal</td>
-<td>41.6</td>
-</tr><tr class="odd"><td>837</td>
-<td>roe</td>
-<td>sal</td>
-<td>22.5</td>
-</tr></tbody></table><p>We still have to decide whether this is the right thing to do or not.
+<figure><img src="../fig/06.12_time_not_2400_or_null_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/06.13_time_not_2400_or_null_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>We still have to decide whether this is the right thing to do or not.
 If we want to be absolutely sure that we aren’t including any
-measurements by Lake in our results, we need to exclude all the records
-for which we don’t know who did the work.</p>
+measurements taken at ‘2400’ in our results, we need to exclude all the
+records for which we don’t the time of the measurement.</p>
 <p>In contrast to arithmetic or Boolean operators, aggregation functions
 that combine multiple values, such as <code>min</code>, <code>max</code>
 or <code>avg</code>, <em>ignore</em> <code>null</code> values. In the
@@ -575,8 +383,9 @@ Aggregation functions will be addressed in more detail in <a href="06-agg.html">
 <h3 class="callout-title">Sorting by Known Date<a class="anchor" aria-label="anchor" href="#sorting-by-known-date"></a>
 </h3>
 <div class="callout-content">
-<p>Write a query that sorts the records in <code>Visited</code> by date,
-omitting entries for which the date is not known (i.e., is null).</p>
+<p>Using the <code>Daily observations table</code>, generate a list of
+unique qflags, omitting entries for which the qflag is not known (i.e.,
+is null).</p>
 </div>
 </div>
 </div>
@@ -587,38 +396,14 @@ omitting entries for which the date is not known (i.e., is null).</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">ORDER</span> <span class="kw">BY</span> dated <span class="kw">ASC</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> qflag <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> qflag <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>id</th>
-<th>site</th>
-<th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>619</td>
-<td>DR-1</td>
-<td>1927-02-08</td>
-</tr><tr class="even"><td>622</td>
-<td>DR-1</td>
-<td>1927-02-10</td>
-</tr><tr class="odd"><td>734</td>
-<td>DR-3</td>
-<td>1930-01-07</td>
-</tr><tr class="even"><td>735</td>
-<td>DR-3</td>
-<td>1930-01-12</td>
-</tr><tr class="odd"><td>751</td>
-<td>DR-3</td>
-<td>1930-02-26</td>
-</tr><tr class="even"><td>837</td>
-<td>MSK-4</td>
-<td>1932-01-14</td>
-</tr><tr class="odd"><td>844</td>
-<td>DR-1</td>
-<td>1932-03-22</td>
-</tr></tbody></table></div>
+<figure><img src="../fig/06.14_distinct_qflag_exclude_null_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/06.15_distinct_qflag_exclude_null_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure></div>
 </div>
 </div>
 </div>
@@ -631,10 +416,10 @@ omitting entries for which the date is not known (i.e., is null).</p>
 </h3>
 <div class="callout-content">
 <p>What do you expect the following query to produce?</p>
-<div class="codewrapper sourceCode" id="cb12">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="kw">IN</span> (<span class="st">'1927-02-08'</span>, <span class="kw">NULL</span>);</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IN</span> (<span class="st">'2400'</span>, <span class="st">'2300'</span>, <span class="kw">NULL</span>);</span></code></pre>
 </div>
 <p>What does it actually produce?</p>
 </div>
@@ -647,25 +432,26 @@ omitting entries for which the date is not known (i.e., is null).</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
-<p>You might expect the above query to return rows where dated is either
-‘1927-02-08’ or NULL. Instead it only returns rows where dated is
-‘1927-02-08’, the same as you would get from this simpler query:</p>
-<div class="codewrapper sourceCode" id="cb13">
+<p>You might expect the above query to return rows where
+<code>time</code> is either ‘2400’, ‘2300’ or NULL. Instead it only
+returns rows where <code>time</code> is ‘2400’ or ‘2300’, the same as
+you would get from this simpler query:</p>
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="kw">IN</span> (<span class="st">'1927-02-08'</span>);</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IN</span> (<span class="st">'2400'</span>, <span class="st">'2300'</span>);</span></code></pre>
 </div>
 <p>The reason is that the <code>IN</code> operator works with a set of
 <em>values</em>, but NULL is by definition not a value and is therefore
 simply ignored.</p>
 <p>If we wanted to actually include NULL, we would have to rewrite the
 query to use the IS NULL condition:</p>
-<div class="codewrapper sourceCode" id="cb14">
+<div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="op">=</span> <span class="st">'1927-02-08'</span> <span class="kw">OR</span> dated <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IN</span> (<span class="st">'2400'</span>, <span class="st">'2300'</span>) <span class="kw">OR</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
 </div>
 </div>
 </div>
@@ -764,7 +550,7 @@ information.</li>
   "url": "https://swcarpentry.github.io/sql-novice-survey/instructor/05-null.html",
   "identifier": "https://swcarpentry.github.io/sql-novice-survey/instructor/05-null.html",
   "dateCreated": "2014-11-21",
-  "dateModified": "2023-10-04",
+  "dateModified": "2023-10-10",
   "datePublished": "2023-10-10"
 }
 

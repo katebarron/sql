@@ -256,54 +256,6 @@
 </div>
 <!--/div.accordion-flush-->
 
-<div class="accordion accordion-flush" id="accordionFlush9">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading9">
-        <a href="08-hygiene.html">8. Data Hygiene</a>
-    </div>
-<!--/div.accordion-header-->
-        
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush10">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading10">
-        <a href="09-create.html">9. Creating and Modifying Data</a>
-    </div>
-<!--/div.accordion-header-->
-        
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush11">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading11">
-        <a href="10-prog.html">10. Programming with Databases - Python</a>
-    </div>
-<!--/div.accordion-header-->
-        
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush12">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading12">
-        <a href="11-prog-R.html">11. Programming with Databases - R</a>
-    </div>
-<!--/div.accordion-header-->
-        
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
                 </div>
               </div>
             </div>
@@ -407,8 +359,6 @@ information.</li>
 <li>Aggregation functions ignore <code>null</code> values.</li>
 <li>Aggregation happens after filtering.</li>
 <li>Use GROUP BY to combine subsets separately.</li>
-<li>If no aggregation function is specified for a field, the query may
-return an arbitrary value for that field.</li>
 </ul></section><section id="07-join"><h2 class="section-heading"><a href="07-join.html">Combining Data</a></h2>
 <hr class="half-width">
 <ul>
@@ -424,48 +374,6 @@ values are a primary key in another table.</li>
 <li>We can eliminate meaningless combinations of records by matching
 primary keys and foreign keys between tables.</li>
 <li>The most common join condition is matching keys.</li>
-</ul></section><section id="08-hygiene"><h2 class="section-heading"><a href="08-hygiene.html">Data Hygiene</a></h2>
-<hr class="half-width">
-<ul>
-<li>Every value in a database should be atomic.</li>
-<li>Every record should have a unique primary key.</li>
-<li>A database should not contain redundant information.</li>
-<li>Units and similar metadata should be stored with the data.</li>
-</ul></section><section id="09-create"><h2 class="section-heading"><a href="09-create.html">Creating and Modifying Data</a></h2>
-<hr class="half-width">
-<ul>
-<li>Use CREATE and DROP to create and delete tables.</li>
-<li>Use INSERT to add data.</li>
-<li>Use UPDATE to modify existing data.</li>
-<li>Use DELETE to remove data.</li>
-<li>It is simpler and safer to modify data when every record has a
-unique primary key.</li>
-<li>Do not create dangling references by deleting records that other
-records refer to.</li>
-</ul></section><section id="10-prog"><h2 class="section-heading"><a href="10-prog.html">Programming with Databases - Python</a></h2>
-<hr class="half-width">
-<ul>
-<li>General-purpose languages have libraries for accessing
-databases.</li>
-<li>To connect to a database, a program must use a library specific to
-that database manager.</li>
-<li>These libraries use a connection-and-cursor model.</li>
-<li>Programs can read query results in batches or all at once.</li>
-<li>Queries should be written using parameter substitution, not string
-formatting.</li>
-</ul></section><section id="11-prog-R"><h2 class="section-heading"><a href="11-prog-R.html">Programming with Databases - R</a></h2>
-<hr class="half-width">
-<ul>
-<li>Data analysis languages have libraries for accessing databases.</li>
-<li>To connect to a database, a program must use a library specific to
-that database manager.</li>
-<li>R’s libraries can be used to directly query or read from a
-database.</li>
-<li>Programs can read query results in batches or all at once.</li>
-<li>Queries should be written using parameter substitution, not string
-formatting.</li>
-<li>R has multiple helper functions to make working with databases
-easier.</li>
 </ul></section>
 </div>
     </main>

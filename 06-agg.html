@@ -78,11 +78,11 @@
   SQL Queries in Redivis
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 33%" class="percentage">
-    33%
+<aside class="col-md-12 lesson-progress"><div style="width: 61%" class="percentage">
+    61%
   </div>
   <div class="progress software">
-    <div class="progress-bar software" role="progressbar" style="width: 33%" aria-valuenow="33" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar software" role="progressbar" style="width: 61%" aria-valuenow="61" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -203,42 +203,6 @@
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
-<div class="accordion accordion-flush" id="accordionFlush9">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading9">
-        <a href="08-hygiene.html">8. Data Hygiene</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush10">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading10">
-        <a href="09-create.html">9. Creating and Modifying Data</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush11">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading11">
-        <a href="10-prog.html">10. Programming with Databases - Python</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush12">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading12">
-        <a href="11-prog-R.html">11. Programming with Databases - R</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
                 </div>
               </div>
             </div>
@@ -297,7 +261,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Aggregation</h1>
-        <p> Last updated on 2023-10-04 | 
+        <p> Last updated on 2023-10-10 | 
         
         <a href="https://github.com/swcarpentry/sql-novice-survey/edit/main/episodes/06-agg.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -334,333 +298,233 @@
 </div>
 </div>
 <p>We now want to calculate ranges and averages for our data. We know
-how to select all of the dates from the <code>Visited</code> table:</p>
+how to select all of the dates from the <code>Daily observations</code>
+table:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> dated <span class="kw">FROM</span> Visited;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">date</span> <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>dated</th>
-</tr></thead><tbody><tr class="odd"><td>1927-02-08</td>
-</tr><tr class="even"><td>1927-02-10</td>
-</tr><tr class="odd"><td>1930-01-07</td>
-</tr><tr class="even"><td>1930-01-12</td>
-</tr><tr class="odd"><td>1930-02-26</td>
-</tr><tr class="even"><td>-null-</td>
-</tr><tr class="odd"><td>1932-01-14</td>
-</tr><tr class="even"><td>1932-03-22</td>
-</tr></tbody></table><p>but to combine them, we must use an <a href="reference.html#aggregation-function">aggregation function</a> such
+<p>but to combine them, we must use an <a href="reference.html#aggregation-function">aggregation function</a> such
 as <code>min</code> or <code>max</code>. Each of these functions takes a
 set of records as input, and produces a single record as output:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">min</span>(dated) <span class="kw">FROM</span> Visited;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">min</span>(<span class="dt">date</span>) <span class="kw">AS</span> min_date <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>min(dated)</th>
-</tr></thead><tbody><tr class="odd"><td>1927-02-08</td>
-</tr></tbody></table><figure><img src="fig/sql-aggregation.svg" alt="SQL Aggregation" class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb3">
+<table class="table"><thead><tr class="header"><th>min_date</th>
+</tr></thead><tbody><tr class="odd"><td>1871-07-01</td>
+</tr></tbody></table><figure><img src="fig/07.1_select_min_date_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/07.2_select_min_date_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">max</span>(dated) <span class="kw">FROM</span> Visited;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">max</span>(<span class="dt">date</span>) <span class="kw">AS</span> max_date <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>max(dated)</th>
-</tr></thead><tbody><tr class="odd"><td>1932-03-22</td>
-</tr></tbody></table><p><code>min</code> and <code>max</code> are just two of the aggregation
+<table class="table"><thead><tr class="header"><th>max_date</th>
+</tr></thead><tbody><tr class="odd"><td>2021-12-31</td>
+</tr></tbody></table><figure><img src="fig/07.3_max_date_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/07.4_max_date_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p><code>min</code> and <code>max</code> are just two of the aggregation
 functions built into SQL. Three others are <code>avg</code>,
 <code>count</code>, and <code>sum</code>:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">avg</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'sal'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">avg</span>(<span class="fu">value</span>) <span class="kw">AS</span> avg_value <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>avg(reading)</th>
-</tr></thead><tbody><tr class="odd"><td>7.20333333333333</td>
-</tr></tbody></table><div class="codewrapper sourceCode" id="cb5">
+<table class="table"><thead><tr class="header"><th>avg_value</th>
+</tr></thead><tbody><tr class="odd"><td>24.895614002602183</td>
+</tr></tbody></table><figure><img src="fig/07.5_avg_prcp_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/07.6_avg_prcp_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">count</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'sal'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">count</span>(element) <span class="kw">AS</span> <span class="fu">count</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>count(reading)</th>
-</tr></thead><tbody><tr class="odd"><td>9</td>
-</tr></tbody></table><div class="codewrapper sourceCode" id="cb6">
+<table class="table"><thead><tr class="header"><th>count</th>
+</tr></thead><tbody><tr class="odd"><td>9289244</td>
+</tr></tbody></table><figure><img src="fig/07.7_count_prcp_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/07.8_count_prcp_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">sum</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'sal'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">sum</span>(<span class="fu">value</span>) <span class="kw">AS</span> <span class="fu">sum</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>sum(reading)</th>
-</tr></thead><tbody><tr class="odd"><td>64.83</td>
-</tr></tbody></table><p>We used <code>count(reading)</code> here, but we could just as easily
-have counted <code>quant</code> or any other field in the table, or even
+<table class="table"><thead><tr class="header"><th>sum</th>
+</tr></thead><tbody><tr class="odd"><td>231261433.0</td>
+</tr></tbody></table><figure><img src="fig/07.9_sum_prcp_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/07.10_sum_prcp_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>We used <code>count(element)</code> here, but we could just as easily
+have counted <code>date</code> or any other field in the table, or even
 used <code>count(*)</code>, since the function doesn’t care about the
 values themselves, just how many values there are.</p>
 <p>SQL lets us do several aggregations at once. We can, for example,
-find the range of sensible salinity measurements:</p>
+find the range of sensible precipitation measurements:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">min</span>(reading), <span class="fu">max</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'sal'</span> <span class="kw">AND</span> reading <span class="op">&lt;=</span> <span class="fl">1.0</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">min</span>(<span class="fu">value</span>) <span class="kw">AS</span> <span class="fu">min</span>, <span class="fu">max</span>(<span class="fu">value</span>) <span class="kw">AS</span> <span class="fu">max</span> <span class="kw">FROM</span> _source_ </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span> <span class="kw">AND</span> <span class="fu">value</span> <span class="op">&gt;=</span> <span class="dv">0</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>min(reading)</th>
-<th>max(reading)</th>
-</tr></thead><tbody><tr class="odd"><td>0.05</td>
-<td>0.21</td>
-</tr></tbody></table><p>We can also combine aggregated results with raw results, although the
-output might surprise you:</p>
-<div class="codewrapper sourceCode" id="cb8">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> person, <span class="fu">count</span>(<span class="op">*</span>) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'sal'</span> <span class="kw">AND</span> reading <span class="op">&lt;=</span> <span class="fl">1.0</span>;</span></code></pre>
-</div>
-<table class="table"><thead><tr class="header"><th>person</th>
-<th>count(*)</th>
-</tr></thead><tbody><tr class="odd"><td>lake</td>
-<td>7</td>
-</tr></tbody></table><p>Why does Lake’s name appear rather than Roerich’s or Dyer’s? The
-answer is that when it has to aggregate a field, but isn’t told how to,
-the database manager chooses an actual value from the input set. It
-might use the first one processed, the last one, or something else
-entirely.</p>
-<p>Another important fact is that when there are no values to aggregate
+<table class="table"><thead><tr class="header"><th>min</th>
+<th>max</th>
+</tr></thead><tbody><tr class="odd"><td>0.0</td>
+<td>22860.0</td>
+</tr></tbody></table><figure><img src="fig/07.11_min_max_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/07.12_min_max_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>Another important fact is that when there are no values to aggregate
 — for example, where there are no rows satisfying the <code>WHERE</code>
 clause — aggregation’s result is “don’t know” rather than zero or some
 other arbitrary value:</p>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> person, <span class="fu">max</span>(reading), <span class="fu">sum</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'missing'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">max</span>(<span class="fu">value</span>) <span class="kw">AS</span> <span class="fu">max</span>, <span class="fu">min</span>(<span class="fu">value</span>) <span class="kw">AS</span> <span class="fu">min</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'IDK'</span> <span class="kw">AND</span> <span class="fu">value</span> <span class="op">&gt;=</span> <span class="dv">0</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>person</th>
-<th>max(reading)</th>
-<th>sum(reading)</th>
+<table class="table"><thead><tr class="header"><th>min</th>
+<th>max</th>
 </tr></thead><tbody><tr class="odd"><td>-null-</td>
 <td>-null-</td>
-<td>-null-</td>
-</tr></tbody></table><p>One final important feature of aggregation functions is that they are
+</tr></tbody></table><figure><img src="fig/07.13_where_clause_unsatisfied_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/07.14_where_clause_unsatisfied_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>One final important feature of aggregation functions is that they are
 inconsistent with the rest of SQL in a very useful way. If we add two
 values, and one of them is null, the result is null. By extension, if we
 use <code>sum</code> to add all the values in a set, and any of those
 values are null, the result should also be null. It’s much more useful,
 though, for aggregation functions to ignore null values and only combine
 those that are non-null. This behavior lets us write our queries as:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">min</span>(<span class="dt">date</span>) <span class="kw">AS</span> <span class="fu">min</span> <span class="kw">FROM</span> _source_;</span></code></pre>
+</div>
+<table class="table"><thead><tr class="header"><th>min</th>
+</tr></thead><tbody><tr class="odd"><td>1871-07-01</td>
+</tr></tbody></table><p>instead of always having to filter explicitly:</p>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">min</span>(dated) <span class="kw">FROM</span> Visited;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">min</span>(<span class="dt">date</span>) <span class="kw">AS</span> <span class="fu">min</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">date</span> <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>min(dated)</th>
-</tr></thead><tbody><tr class="odd"><td>1927-02-08</td>
-</tr></tbody></table><p>instead of always having to filter explicitly:</p>
+<table class="table"><thead><tr class="header"><th>min</th>
+</tr></thead><tbody><tr class="odd"><td>1871-07-01</td>
+</tr></tbody></table><p>Let’s say that we want to know the average precipitation by date. If
+we try the following query, Redivis will throw an error:</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">min</span>(dated) <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">date</span>, <span class="fu">avg</span>(<span class="fu">value</span>) <span class="kw">AS</span> avg_prcp <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>min(dated)</th>
-</tr></thead><tbody><tr class="odd"><td>1927-02-08</td>
-</tr></tbody></table><p>Aggregating all records at once doesn’t always make sense. For
-example, suppose we suspect that there is a systematic bias in our data,
-and that some scientists’ radiation readings are higher than others. We
-know that this doesn’t work:</p>
+<p>because Redivis doesn’t know which date to return alongside the
+average precipitation.</p>
+<figure><img src="fig/07.15_combine_raw_aggregate_error.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>There are 54,963 unique dates. It’s not reasonable to write 54,963
+queries of the form:</p>
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> person, <span class="fu">count</span>(reading), <span class="fu">round</span>(<span class="fu">avg</span>(reading), <span class="dv">2</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>  Survey</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'rad'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">date</span>, <span class="fu">avg</span>(<span class="fu">value</span>) <span class="kw">AS</span> avg_prcp <span class="kw">FROM</span> _source_ </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span> <span class="kw">AND</span> <span class="dt">date</span> <span class="op">=</span> YYYY<span class="op">-</span>MM<span class="op">-</span>DD;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>person</th>
-<th>count(reading)</th>
-<th>round(avg(reading), 2)</th>
-</tr></thead><tbody><tr class="odd"><td>roe</td>
-<td>8</td>
-<td>6.56</td>
-</tr></tbody></table><p>because the database manager selects a single arbitrary scientist’s
-name rather than aggregating separately for each scientist. Since there
-are only five scientists, we could write five queries of the form:</p>
+<p>What we need to do is tell the database manager to aggregate the
+average precipitation for each date separately using a
+<code>GROUP BY</code> clause:</p>
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> person, <span class="fu">count</span>(reading), <span class="fu">round</span>(<span class="fu">avg</span>(reading), <span class="dv">2</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>  Survey</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'rad'</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">AND</span>   person <span class="op">=</span> <span class="st">'dyer'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">date</span>, <span class="fu">avg</span>(<span class="fu">value</span>) <span class="kw">AS</span> avg_prcp <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">GROUP</span> <span class="kw">BY</span> <span class="dt">date</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ORDER</span> <span class="kw">by</span> <span class="dt">date</span> <span class="kw">DESC</span>;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>person</th>
-<th>count(reading)</th>
-<th>round(avg(reading), 2)</th>
-</tr></thead><tbody><tr class="odd"><td>dyer</td>
-<td>2</td>
-<td>8.81</td>
-</tr></tbody></table><p>but this would be tedious, and if we ever had a data set with fifty
-or five hundred scientists, the chances of us getting all of those
-queries right is small.</p>
-<p>What we need to do is tell the database manager to aggregate the
-hours for each scientist separately using a <code>GROUP BY</code>
-clause:</p>
-<div class="codewrapper sourceCode" id="cb14">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   person, <span class="fu">count</span>(reading), <span class="fu">round</span>(<span class="fu">avg</span>(reading), <span class="dv">2</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     Survey</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>    quant <span class="op">=</span> <span class="st">'rad'</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> person;</span></code></pre>
-</div>
-<table class="table"><thead><tr class="header"><th>person</th>
-<th>count(reading)</th>
-<th>round(avg(reading), 2)</th>
-</tr></thead><tbody><tr class="odd"><td>dyer</td>
-<td>2</td>
-<td>8.81</td>
-</tr><tr class="even"><td>lake</td>
-<td>2</td>
-<td>1.82</td>
-</tr><tr class="odd"><td>pb</td>
-<td>3</td>
-<td>6.66</td>
-</tr><tr class="even"><td>roe</td>
-<td>1</td>
-<td>11.25</td>
-</tr></tbody></table><p><code>GROUP BY</code> does exactly what its name implies: groups all
+<table class="table"><thead><tr class="header"><th>date</th>
+<th>avg_prcp</th>
+</tr></thead><tbody><tr class="odd"><td>2021-12-31</td>
+<td>26.154761904761898</td>
+</tr><tr class="even"><td>2021-12-30</td>
+<td>32.957528957528964</td>
+</tr><tr class="odd"><td>2021-12-29</td>
+<td>34.042307692307695</td>
+</tr><tr class="even"><td>2021-12-28</td>
+<td>16.272373540856034</td>
+</tr></tbody></table><p><img src="fig/07.16_group_by_date_query.png" id="id" class="class figure" border="5px" alt=""><img src="fig/07.17_group_by_date_output.png" id="id" class="class figure" border="5px" alt=""></p>
+<p><code>GROUP BY</code> does exactly what its name implies: groups all
 the records with the same value for the specified field together so that
-aggregation can process each batch separately. Since all the records in
-each batch have the same value for <code>person</code>, it no longer
-matters that the database manager is picking an arbitrary one to display
-alongside the aggregated <code>reading</code> values.</p>
+aggregation can process each batch separately.</p>
 <p>Just as we can sort by multiple criteria at once, we can also group
 by multiple criteria. To get the average reading by scientist and
 quantity measured, for example, we just add another field to the
 <code>GROUP BY</code> clause:</p>
+<div class="codewrapper sourceCode" id="cb14">
+<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">date</span>, <span class="dt">time</span>, <span class="fu">avg</span>(<span class="fu">value</span>) <span class="kw">AS</span> avg_prcp <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">GROUP</span> <span class="kw">BY</span> <span class="dt">date</span>, <span class="dt">time</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ORDER</span> <span class="kw">by</span> <span class="dt">date</span> <span class="kw">DESC</span>, <span class="dt">time</span> <span class="kw">ASC</span>;</span></code></pre>
+</div>
+<table class="table"><colgroup><col width="30%"><col width="26%"><col width="42%"></colgroup><thead><tr class="header"><th>date</th>
+<th>time</th>
+<th>avg_prcp</th>
+</tr></thead><tbody><tr class="odd"><td>2021-12-31</td>
+<td>-null-</td>
+<td>27.441624365482234</td>
+</tr><tr class="even"><td>2021-12-31</td>
+<td>0600</td>
+<td>0.0</td>
+</tr><tr class="odd"><td>2021-12-31</td>
+<td>0630</td>
+<td>5.0</td>
+</tr><tr class="even"><td>2021-12-31</td>
+<td>0700</td>
+<td>8.1818181818181817</td>
+</tr><tr class="odd"><td></td>
+<td></td>
+<td></td>
+</tr></tbody></table><p>Note that we have added <code>time</code> to the list of fields
+displayed, since the results wouldn’t make much sense otherwise.</p>
+<p><img src="fig/07.18_group_by_date_time_query.png" id="id" class="class figure" border="5px" alt=""><img src="fig/07.19_group_by_date_time_output.png" id="id" class="class figure" border="5px" alt=""></p>
+<p>Let’s go one step further and remove all the entries where we don’t
+know what time the measurement was taken:</p>
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   person, quant, <span class="fu">count</span>(reading), <span class="fu">round</span>(<span class="fu">avg</span>(reading), <span class="dv">2</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     Survey</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> person, quant;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">date</span>, <span class="dt">time</span>, <span class="fu">avg</span>(<span class="fu">value</span>) <span class="kw">AS</span> avg_prcp <span class="kw">FROM</span> _source_ </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span> <span class="kw">AND</span> <span class="dt">time</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">GROUP</span> <span class="kw">BY</span> <span class="dt">date</span>, <span class="dt">time</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ORDER</span> <span class="kw">by</span> <span class="dt">date</span> <span class="kw">DESC</span>, <span class="dt">time</span> <span class="kw">ASC</span>;</span></code></pre>
 </div>
-<table class="table"><colgroup><col width="21%"><col width="18%"><col width="29%"><col width="29%"></colgroup><thead><tr class="header"><th>person</th>
-<th>quant</th>
-<th>count(reading)</th>
-<th>round(avg(reading), 2)</th>
-</tr></thead><tbody><tr class="odd"><td>-null-</td>
-<td>sal</td>
-<td>1</td>
-<td>0.06</td>
-</tr><tr class="even"><td>-null-</td>
-<td>temp</td>
-<td>1</td>
-<td>-26.0</td>
-</tr><tr class="odd"><td>dyer</td>
-<td>rad</td>
-<td>2</td>
-<td>8.81</td>
-</tr><tr class="even"><td>dyer</td>
-<td>sal</td>
-<td>2</td>
-<td>0.11</td>
-</tr><tr class="odd"><td>lake</td>
-<td>rad</td>
-<td>2</td>
-<td>1.82</td>
-</tr><tr class="even"><td>lake</td>
-<td>sal</td>
-<td>4</td>
-<td>0.11</td>
-</tr><tr class="odd"><td>lake</td>
-<td>temp</td>
-<td>1</td>
-<td>-16.0</td>
-</tr><tr class="even"><td>pb</td>
-<td>rad</td>
-<td>3</td>
-<td>6.66</td>
-</tr><tr class="odd"><td>pb</td>
-<td>temp</td>
-<td>2</td>
-<td>-20.0</td>
-</tr><tr class="even"><td>roe</td>
-<td>rad</td>
-<td>1</td>
-<td>11.25</td>
-</tr><tr class="odd"><td>roe</td>
-<td>sal</td>
-<td>2</td>
-<td>32.05</td>
-</tr></tbody></table><p>Note that we have added <code>quant</code> to the list of fields
-displayed, since the results wouldn’t make much sense otherwise.</p>
-<p>Let’s go one step further and remove all the entries where we don’t
-know who took the measurement:</p>
-<div class="codewrapper sourceCode" id="cb16">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   person, quant, <span class="fu">count</span>(reading), <span class="fu">round</span>(<span class="fu">avg</span>(reading), <span class="dv">2</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     Survey</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>    person <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> person, quant</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> person, quant;</span></code></pre>
-</div>
-<table class="table"><colgroup><col width="21%"><col width="18%"><col width="29%"><col width="29%"></colgroup><thead><tr class="header"><th>person</th>
-<th>quant</th>
-<th>count(reading)</th>
-<th>round(avg(reading), 2)</th>
-</tr></thead><tbody><tr class="odd"><td>dyer</td>
-<td>rad</td>
-<td>2</td>
-<td>8.81</td>
-</tr><tr class="even"><td>dyer</td>
-<td>sal</td>
-<td>2</td>
-<td>0.11</td>
-</tr><tr class="odd"><td>lake</td>
-<td>rad</td>
-<td>2</td>
-<td>1.82</td>
-</tr><tr class="even"><td>lake</td>
-<td>sal</td>
-<td>4</td>
-<td>0.11</td>
-</tr><tr class="odd"><td>lake</td>
-<td>temp</td>
-<td>1</td>
-<td>-16.0</td>
-</tr><tr class="even"><td>pb</td>
-<td>rad</td>
-<td>3</td>
-<td>6.66</td>
-</tr><tr class="odd"><td>pb</td>
-<td>temp</td>
-<td>2</td>
-<td>-20.0</td>
-</tr><tr class="even"><td>roe</td>
-<td>rad</td>
-<td>1</td>
-<td>11.25</td>
-</tr><tr class="odd"><td>roe</td>
-<td>sal</td>
-<td>2</td>
-<td>32.05</td>
-</tr></tbody></table><p>Looking more closely, this query:</p>
-<ol style="list-style-type: decimal"><li><p>selected records from the <code>Survey</code> table where the
-<code>person</code> field was not null;</p></li>
-<li><p>grouped those records into subsets so that the
-<code>person</code> and <code>quant</code> values in each subset were
-the same;</p></li>
-<li><p>ordered those subsets first by <code>person</code>, and then
-within each sub-group by <code>quant</code>; and</p></li>
-<li><p>counted the number of records in each subset, calculated the
-average <code>reading</code> in each, and chose a <code>person</code>
-and <code>quant</code> value from each (it doesn’t matter which ones,
-since they’re all equal).</p></li>
-</ol><div id="counting-temperature-readings" class="callout challenge">
+<table class="table"><colgroup><col width="21%"><col width="18%"><col width="29%"><col width="29%"></colgroup><thead><tr class="header"><th>date</th>
+<th>time</th>
+<th>avg_prcp</th>
+<th></th>
+</tr></thead><tbody><tr class="odd"><td>2021-12-31</td>
+<td>0600</td>
+<td>0.0</td>
+<td></td>
+</tr><tr class="even"><td>2021-12-31</td>
+<td>0630</td>
+<td>5.0</td>
+<td></td>
+</tr><tr class="odd"><td>2021-12-31</td>
+<td>0700</td>
+<td>8.1818181818181817</td>
+<td></td>
+</tr><tr class="even"><td>2021-12-31</td>
+<td>0800</td>
+<td>35.625</td>
+<td></td>
+</tr><tr class="odd"><td>2021-12-31</td>
+<td>1500</td>
+<td>0.0</td>
+<td></td>
+</tr></tbody></table><p><img src="fig/07.20_group_by_date_time_not_null_query.png" id="id" class="class figure" border="5px" alt=""><img src="fig/07.21_group_by_date_time_not_null_output.png" id="id" class="class figure" border="5px" alt=""></p>
+<p>Looking more closely, this query:</p>
+<ol style="list-style-type: decimal"><li><p>selected records from the <code>Daily observations</code> table
+where the <code>element</code> field is ‘PRCP’ and the <code>time</code>
+field was not null;</p></li>
+<li><p>grouped those records into <code>date</code> and
+<code>time</code> subsets;</p></li>
+<li><p>ordered those subsets first by <code>date</code>, and then by
+<code>time</code>; and</p></li>
+<li><p>calculated the average precipitation of each subset.</p></li>
+</ol><div id="counting-observation-types" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="counting-temperature-readings" class="callout-inner">
-<h3 class="callout-title">Counting Temperature Readings<a class="anchor" aria-label="anchor" href="#counting-temperature-readings"></a>
+<div id="counting-observation-types" class="callout-inner">
+<h3 class="callout-title">Counting Observation Types<a class="anchor" aria-label="anchor" href="#counting-observation-types"></a>
 </h3>
 <div class="callout-content">
-<p>How many temperature readings did Frank Pabodie record, and what was
-their average value?</p>
+<p>Using the <code>Daily observations</code> table, find out how many
+times each observation type occurred.</p>
 </div>
 </div>
 </div>
@@ -671,18 +535,16 @@ their average value?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb17">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">count</span>(reading), <span class="fu">avg</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'temp'</span> <span class="kw">AND</span> person <span class="op">=</span> <span class="st">'pb'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> element, <span class="fu">count</span>(<span class="op">*</span>) <span class="kw">as</span> <span class="fu">count</span> <span class="kw">FROM</span> _source_ </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">GROUP</span> <span class="kw">by</span> element;</span></code></pre>
 </div>
-<table class="table"><thead><tr class="header"><th>count(reading)</th>
-<th>avg(reading)</th>
-</tr></thead><tbody><tr class="odd"><td>2</td>
-<td>-20.0</td>
-</tr></tbody></table></div>
+<p><img src="fig/07.22_observation_type_count_query.png" id="id" class="class figure" border="5px" alt=""><img src="fig/07.23_observation_type_count_output.png" id="id" class="class figure" border="5px" alt=""></p>
+</div>
 </div>
 </div>
 </div>
@@ -708,40 +570,26 @@ returns 2.0 or 3.0 when given the values 1.0, <code>null</code>, and
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>The answer is 3.0. <code>NULL</code> is not a value; it is the
 absence of a value. As such it is not included in the calculation.</p>
-<p>You can confirm this, by executing this code:</p>
-<div class="codewrapper sourceCode" id="cb18">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(a) <span class="kw">FROM</span> (</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">AS</span> a</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">UNION</span> <span class="kw">ALL</span> <span class="kw">SELECT</span> <span class="kw">NULL</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">UNION</span> <span class="kw">ALL</span> <span class="kw">SELECT</span> <span class="dv">5</span>);</span></code></pre>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div id="what-does-this-query-do" class="callout challenge">
+<div id="comparing-precipitation-measures-and-average-precipitation" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="what-does-this-query-do" class="callout-inner">
-<h3 class="callout-title">What Does This Query Do?<a class="anchor" aria-label="anchor" href="#what-does-this-query-do"></a>
+<div id="comparing-precipitation-measures-and-average-precipitation" class="callout-inner">
+<h3 class="callout-title">Comparing Precipitation Measures and Average
+Precipitation<a class="anchor" aria-label="anchor" href="#comparing-precipitation-measures-and-average-precipitation"></a>
 </h3>
 <div class="callout-content">
-<p>We want to calculate the difference between each individual radiation
-reading and the average of all the radiation readings. We write the
-query:</p>
-<div class="codewrapper sourceCode" id="cb19">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> reading <span class="op">-</span> <span class="fu">avg</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'rad'</span>;</span></code></pre>
-</div>
-<p>What does this actually produce, and can you think of why?</p>
+<p>Write a query that returns the difference between each individual
+precipitation measure and the average of all the precipitation
+measures.</p>
 </div>
 </div>
 </div>
@@ -752,85 +600,17 @@ query:</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
-<p>The query produces only one row of results when we what we really
-want is a result for each of the readings. The <code>avg()</code>
-function produces only a single value, and because it is run first, the
-table is reduced to a single row. The <code>reading</code> value is
-simply an arbitrary one.</p>
-<p>To achieve what we wanted, we would have to run two queries:</p>
-<div class="codewrapper sourceCode" id="cb20">
+<p>We can accomplish this task using sub-queries.</p>
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">avg</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant<span class="op">=</span><span class="st">'rad'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">value</span> <span class="op">-</span> (<span class="kw">SELECT</span> <span class="fu">avg</span>(<span class="fu">value</span>) <span class="kw">AS</span> <span class="fu">avg</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element<span class="op">=</span><span class="st">'PRCP'</span>) <span class="kw">AS</span> difference </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span>;</span></code></pre>
 </div>
-<p>This produces the average value (6.5625), which we can then insert
-into a second query:</p>
-<div class="codewrapper sourceCode" id="cb21">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> reading <span class="op">-</span> <span class="fl">6.5625</span> <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'rad'</span>;</span></code></pre>
-</div>
-<p>This produces what we want, but we can combine this into a single
-query using subqueries.</p>
-<div class="codewrapper sourceCode" id="cb22">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> reading <span class="op">-</span> (<span class="kw">SELECT</span> <span class="fu">avg</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant<span class="op">=</span><span class="st">'rad'</span>) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant <span class="op">=</span> <span class="st">'rad'</span>;</span></code></pre>
-</div>
-<p>This way we don’t have execute two queries.</p>
-<p>In summary what we have done is to replace <code>avg(reading)</code>
-with <code>(SELECT avg(reading) FROM Survey WHERE quant='rad')</code> in
-the original query.</p>
-</div>
-</div>
-</div>
-</div>
-<div id="using-the-group_concat-function" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<div id="using-the-group_concat-function" class="callout-inner">
-<h3 class="callout-title">Using the group_concat function<a class="anchor" aria-label="anchor" href="#using-the-group_concat-function"></a>
-</h3>
-<div class="callout-content">
-<p>The function <code>group_concat(field, separator)</code> concatenates
-all the values in a field using the specified separator character (or
-‘,’ if the separator isn’t specified). Use this to produce a one-line
-list of scientists’ names, such as:</p>
-<div class="codewrapper sourceCode" id="cb23">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>William Dyer, Frank Pabodie, Anderson Lake, Valentina Roerich, Frank Danforth</span></code></pre>
-</div>
-<p>Can you find a way to list all the scientists family names separated
-by a comma? Can you find a way to list all the scientists personal and
-family names separated by a comma?</p>
-</div>
-</div>
-</div>
-<div id="accordionSolution4" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
-  <h4 class="accordion-header" id="headingSolution4">
-  Show me the solution
-  </h4>
-</button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
-<div class="accordion-body">
-<p>List all the family names separated by a comma:</p>
-<div class="codewrapper sourceCode" id="cb24">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> group_concat(family, <span class="st">','</span>) <span class="kw">FROM</span> Person;</span></code></pre>
-</div>
-<p>List all the full names separated by a comma:</p>
-<div class="codewrapper sourceCode" id="cb25">
-<h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> group_concat(personal <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> family, <span class="st">','</span>) <span class="kw">FROM</span> Person;</span></code></pre>
-</div>
+<p><img src="fig/07.24_difference_query.png" id="id" class="class figure" border="5px" alt=""><img src="fig/07.25_difference_output.png" id="id" class="class figure" border="5px" alt=""></p>
 </div>
 </div>
 </div>
@@ -847,8 +627,6 @@ family names separated by a comma?</p>
 <li>Aggregation functions ignore <code>null</code> values.</li>
 <li>Aggregation happens after filtering.</li>
 <li>Use GROUP BY to combine subsets separately.</li>
-<li>If no aggregation function is specified for a field, the query may
-return an arbitrary value for that field.</li>
 </ul></div>
 </div>
 </div>
@@ -914,7 +692,7 @@ return an arbitrary value for that field.</li>
   "url": "https://swcarpentry.github.io/sql-novice-survey/06-agg.html",
   "identifier": "https://swcarpentry.github.io/sql-novice-survey/06-agg.html",
   "dateCreated": "2014-11-21",
-  "dateModified": "2023-10-04",
+  "dateModified": "2023-10-10",
   "datePublished": "2023-10-10"
 }
 
