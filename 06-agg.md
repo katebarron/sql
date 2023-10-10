@@ -20,22 +20,11 @@ exercises: 10
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 We now want to calculate ranges and averages for our data.
-We know how to select all of the dates from the `Visited` table:
+We know how to select all of the dates from the `Daily observations` table:
 
 ```sql
-SELECT dated FROM Visited;
+SELECT date FROM _source_;
 ```
-
-| dated            | 
-| ---------------- |
-| 1927-02-08       | 
-| 1927-02-10       | 
-| 1930-01-07       | 
-| 1930-01-12       | 
-| 1930-02-26       | 
-| \-null-           | 
-| 1932-01-14       | 
-| 1932-03-22       | 
 
 but to combine them,
 we must use an [aggregation function](../learners/reference.md#aggregation-function)
@@ -44,22 +33,30 @@ Each of these functions takes a set of records as input,
 and produces a single record as output:
 
 ```sql
-SELECT min(dated) FROM Visited;
+SELECT min(date) AS min_date FROM _source_;
 ```
 
-| min(dated)       | 
+| min_date   | 
 | ---------------- |
-| 1927-02-08       | 
+|  1871-07-01| 
 
-![](fig/sql-aggregation.svg){alt='SQL Aggregation'}
+
+![](fig/07.1_select_min_date_query.png){#id .class border=5px alt=''}
+
+![](fig/07.2_select_min_date_output.png){#id .class border=5px alt=''}
 
 ```sql
-SELECT max(dated) FROM Visited;
+SELECT max(date) AS max_date FROM _source_;
+
 ```
 
-| max(dated)       | 
+| max_date   | 
 | ---------------- |
-| 1932-03-22       | 
+|  2021-12-31| 
+
+![](fig/07.3_max_date_query.png){#id .class border=5px alt=''}
+
+![](fig/07.4_max_date_output.png){#id .class border=5px alt=''}
 
 `min` and `max` are just two of
 the aggregation functions built into SQL.
@@ -68,31 +65,46 @@ Three others are `avg`,
 and `sum`:
 
 ```sql
-SELECT avg(reading) FROM Survey WHERE quant = 'sal';
+SELECT avg(value) AS avg_value FROM _source_ WHERE element = 'PRCP';
+
 ```
 
-| avg(reading)     | 
+| avg_value     | 
 | ---------------- |
-| 7\.20333333333333 | 
+| 24.895614002602183 | 
+
+![](fig/07.5_avg_prcp_query.png){#id .class border=5px alt=''}
+
+![](fig/07.6_avg_prcp_output.png){#id .class border=5px alt=''}
+
 
 ```sql
-SELECT count(reading) FROM Survey WHERE quant = 'sal';
+SELECT count(element) AS count FROM _source_ WHERE element = 'PRCP';
 ```
 
-| count(reading)   | 
+| count  | 
 | ---------------- |
-| 9                | 
+| 9289244                | 
+
+![](fig/07.7_count_prcp_query.png){#id .class border=5px alt=''}
+
+![](fig/07.8_count_prcp_output.png){#id .class border=5px alt=''}
 
 ```sql
-SELECT sum(reading) FROM Survey WHERE quant = 'sal';
+SELECT sum(value) AS sum FROM _source_ WHERE element = 'PRCP';
 ```
 
-| sum(reading)     | 
+| sum     | 
 | ---------------- |
-| 64\.83            | 
+| 231261433.0            | 
 
-We used `count(reading)` here,
-but we could just as easily have counted `quant`
+![](fig/07.9_sum_prcp_query.png){#id .class border=5px alt=''}
+
+![](fig/07.10_sum_prcp_output.png){#id .class border=5px alt=''}
+
+
+We used `count(element)` here,
+but we could just as easily have counted `date`
 or any other field in the table,
 or even used `count(*)`,
 since the function doesn't care about the values themselves,
@@ -101,34 +113,21 @@ just how many values there are.
 SQL lets us do several aggregations at once.
 We can,
 for example,
-find the range of sensible salinity measurements:
+find the range of sensible precipitation measurements:
 
 ```sql
-SELECT min(reading), max(reading) FROM Survey WHERE quant = 'sal' AND reading <= 1.0;
+SELECT min(value) AS min, max(value) AS max FROM _source_ 
+  WHERE element = 'PRCP' AND value >= 0;
 ```
 
-| min(reading)     | max(reading)   | 
+| min     | max | 
 | ---------------- | -------------- |
-| 0\.05             | 0\.21           | 
+| 0.0             | 22860.0         | 
 
-We can also combine aggregated results with raw results,
-although the output might surprise you:
+![](fig/07.11_min_max_query.png){#id .class border=5px alt=''}
 
-```sql
-SELECT person, count(*) FROM Survey WHERE quant = 'sal' AND reading <= 1.0;
-```
+![](fig/07.12_min_max_output.png){#id .class border=5px alt=''}
 
-| person           | count(\*)       | 
-| ---------------- | -------------- |
-| lake             | 7              | 
-
-Why does Lake's name appear rather than Roerich's or Dyer's?
-The answer is that when it has to aggregate a field,
-but isn't told how to,
-the database manager chooses an actual value from the input set.
-It might use the first one processed,
-the last one,
-or something else entirely.
 
 Another important fact is that when there are no values to aggregate ---
 for example, where there are no rows satisfying the `WHERE` clause ---
@@ -136,12 +135,17 @@ aggregation's result is "don't know"
 rather than zero or some other arbitrary value:
 
 ```sql
-SELECT person, max(reading), sum(reading) FROM Survey WHERE quant = 'missing';
+SELECT max(value) AS max, min(value) AS min 
+  FROM _source_ WHERE element = 'IDK' AND value >= 0;
 ```
 
-| person           | max(reading)   | sum(reading)           | 
-| ---------------- | -------------- | ---------------------- |
-| \-null-           | \-null-         | \-null-                 | 
+| min           | max   |
+| ---------------- | -------------- |
+| \-null-           | \-null-         | 
+
+![](fig/07.13_where_clause_unsatisfied_query.png){#id .class border=5px alt=''}
+
+![](fig/07.14_where_clause_unsatisfied_output.png){#id .class border=5px alt=''}
 
 One final important feature of aggregation functions is that
 they are inconsistent with the rest of SQL in a very useful way.
@@ -159,84 +163,66 @@ and only combine those that are non-null.
 This behavior lets us write our queries as:
 
 ```sql
-SELECT min(dated) FROM Visited;
+SELECT min(date) AS min FROM _source_;
 ```
 
-| min(dated)       | 
+| min       | 
 | ---------------- |
-| 1927-02-08       | 
+| 1871-07-01      | 
 
 instead of always having to filter explicitly:
 
 ```sql
-SELECT min(dated) FROM Visited WHERE dated IS NOT NULL;
+SELECT min(date) AS min FROM _source_ WHERE date IS NOT NULL;
 ```
 
-| min(dated)       | 
+| min     | 
 | ---------------- |
-| 1927-02-08       | 
+| 1871-07-01       | 
 
-Aggregating all records at once doesn't always make sense.
-For example,
-suppose we suspect that there is a systematic bias in our data,
-and that some scientists' radiation readings are higher than others.
-We know that this doesn't work:
+Let's say that we want to know the average precipitation by date.
+If we try the following query, Redivis will throw an error:
 
 ```sql
-SELECT person, count(reading), round(avg(reading), 2)
-FROM  Survey
-WHERE quant = 'rad';
+SELECT date, avg(value) AS avg_prcp FROM _source_ WHERE element = 'PRCP';
 ```
+because Redivis doesn't know which date to return alongside the average precipitation.
 
-| person           | count(reading) | round(avg(reading), 2) | 
-| ---------------- | -------------- | ---------------------- |
-| roe              | 8              | 6\.56                   | 
+![](fig/07.15_combine_raw_aggregate_error.png){#id .class border=5px alt=''}
 
-because the database manager selects a single arbitrary scientist's name
-rather than aggregating separately for each scientist.
-Since there are only five scientists,
-we could write five queries of the form:
+There are 54,963 unique dates. It's not reasonable to write 54,963 queries of the form:
 
 ```sql
-SELECT person, count(reading), round(avg(reading), 2)
-FROM  Survey
-WHERE quant = 'rad'
-AND   person = 'dyer';
+SELECT date, avg(value) AS avg_prcp FROM _source_ 
+WHERE element = 'PRCP' AND date = YYYY-MM-DD;
+
 ```
-
-| person           | count(reading) | round(avg(reading), 2) | 
-| ---------------- | -------------- | ---------------------- |
-| dyer             | 2              | 8\.81                   | 
-
-but this would be tedious,
-and if we ever had a data set with fifty or five hundred scientists,
-the chances of us getting all of those queries right is small.
 
 What we need to do is
-tell the database manager to aggregate the hours for each scientist separately
+tell the database manager to aggregate the average precipitation for each date separately
 using a `GROUP BY` clause:
 
 ```sql
-SELECT   person, count(reading), round(avg(reading), 2)
-FROM     Survey
-WHERE    quant = 'rad'
-GROUP BY person;
+SELECT date, avg(value) AS avg_prcp FROM _source_ WHERE element = 'PRCP'
+  GROUP BY date
+  ORDER by date DESC;
+
 ```
 
-| person           | count(reading) | round(avg(reading), 2) | 
-| ---------------- | -------------- | ---------------------- |
-| dyer             | 2              | 8\.81                   | 
-| lake             | 2              | 1\.82                   | 
-| pb               | 3              | 6\.66                   | 
-| roe              | 1              | 11\.25                  | 
+| date           | avg_prcp | 
+| ---------------- | -------------- | 
+| 2021-12-31             | 26.154761904761898              | 
+| 2021-12-30             | 32.957528957528964              | 
+| 2021-12-29              | 34.042307692307695            | 
+| 2021-12-28              | 16.272373540856034             |  
+
+![](fig/07.16_group_by_date_query.png){#id .class border=5px alt=''}
+![](fig/07.17_group_by_date_output.png){#id .class border=5px alt=''}
 
 `GROUP BY` does exactly what its name implies:
 groups all the records with the same value for the specified field together
 so that aggregation can process each batch separately.
-Since all the records in each batch have the same value for `person`,
-it no longer matters that the database manager
-is picking an arbitrary one to display
-alongside the aggregated `reading` values.
+
 
 Just as we can sort by multiple criteria at once,
 we can also group by multiple criteria.
@@ -245,89 +231,82 @@ for example,
 we just add another field to the `GROUP BY` clause:
 
 ```sql
-SELECT   person, quant, count(reading), round(avg(reading), 2)
-FROM     Survey
-GROUP BY person, quant;
+SELECT date, time, avg(value) AS avg_prcp FROM _source_ WHERE element = 'PRCP'
+  GROUP BY date, time
+  ORDER by date DESC, time ASC;
 ```
 
-| person           | quant          | count(reading)         | round(avg(reading), 2) | 
-| ---------------- | -------------- | ---------------------- | ---------------------- |
-| \-null-           | sal            | 1                      | 0\.06                   | 
-| \-null-           | temp           | 1                      | \-26.0                  | 
-| dyer             | rad            | 2                      | 8\.81                   | 
-| dyer             | sal            | 2                      | 0\.11                   | 
-| lake             | rad            | 2                      | 1\.82                   | 
-| lake             | sal            | 4                      | 0\.11                   | 
-| lake             | temp           | 1                      | \-16.0                  | 
-| pb               | rad            | 3                      | 6\.66                   | 
-| pb               | temp           | 2                      | \-20.0                  | 
-| roe              | rad            | 1                      | 11\.25                  | 
-| roe              | sal            | 2                      | 32\.05                  | 
+| date          | time          | avg_prcp         |
+| ---------------- | -------------- | ---------------------- |
+| 2021-12-31          | \-null-              | 27.441624365482234                      | 
+| 2021-12-31           | 0600           | 0.0                     |
+| 2021-12-31            | 0630            | 5.0                      | 
+| 2021-12-31            | 0700            | 8.1818181818181817                     | 
+                | 
 
-Note that we have added `quant` to the list of fields displayed,
+Note that we have added `time` to the list of fields displayed,
 since the results wouldn't make much sense otherwise.
 
+![](fig/07.18_group_by_date_time_query.png){#id .class border=5px alt=''}
+![](fig/07.19_group_by_date_time_output.png){#id .class border=5px alt=''}
+
 Let's go one step further and remove all the entries
-where we don't know who took the measurement:
+where we don't know what time the measurement was taken:
 
 ```sql
-SELECT   person, quant, count(reading), round(avg(reading), 2)
-FROM     Survey
-WHERE    person IS NOT NULL
-GROUP BY person, quant
-ORDER BY person, quant;
+SELECT date, time, avg(value) AS avg_prcp FROM _source_ 
+  WHERE element = 'PRCP' AND time NOT NULL
+  GROUP BY date, time
+  ORDER by date DESC, time ASC;
 ```
 
-| person           | quant          | count(reading)         | round(avg(reading), 2) | 
+| date          | time          | avg_prcp         |
 | ---------------- | -------------- | ---------------------- | ---------------------- |
-| dyer             | rad            | 2                      | 8\.81                   | 
-| dyer             | sal            | 2                      | 0\.11                   | 
-| lake             | rad            | 2                      | 1\.82                   | 
-| lake             | sal            | 4                      | 0\.11                   | 
-| lake             | temp           | 1                      | \-16.0                  | 
-| pb               | rad            | 3                      | 6\.66                   | 
-| pb               | temp           | 2                      | \-20.0                  | 
-| roe              | rad            | 1                      | 11\.25                  | 
-| roe              | sal            | 2                      | 32\.05                  | 
+| 2021-12-31           | 0600           | 0.0                     |
+| 2021-12-31            | 0630            | 5.0                      | 
+| 2021-12-31            | 0700            | 8.1818181818181817                     |
+| 2021-12-31            | 0800            | 35.625                     |  
+| 2021-12-31            | 1500            | 0.0                     |  
+
+
+![](fig/07.20_group_by_date_time_not_null_query.png){#id .class border=5px alt=''}
+![](fig/07.21_group_by_date_time_not_null_output.png){#id .class border=5px alt=''}
 
 Looking more closely,
 this query:
 
-1. selected records from the `Survey` table
-  where the `person` field was not null;
+1. selected records from the `Daily observations` table
+  where the `element` field is 'PRCP' and the `time` field was not null;
 
-2. grouped those records into subsets
-  so that the `person` and `quant` values in each subset
-  were the same;
+2. grouped those records into 
+  `date` and `time` subsets;
 
-3. ordered those subsets first by `person`,
-  and then within each sub-group by `quant`;
+3. ordered those subsets first by `date`,
+  and then by `time`;
   and
 
-4. counted the number of records in each subset,
-  calculated the average `reading` in each,
-  and chose a `person` and `quant` value from each
-  (it doesn't matter which ones,
-  since they're all equal).
+4. calculated the average precipitation of each subset.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Counting Temperature Readings
+## Counting Observation Types
 
-How many temperature readings did Frank Pabodie record,
-and what was their average value?
+Using the `Daily observations` table, find out how many times each observation type occurred.
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```sql
-SELECT count(reading), avg(reading) FROM Survey WHERE quant = 'temp' AND person = 'pb';
-```
+SELECT element, count(*) as count FROM _source_ 
+  GROUP by element;
+  ```
 
-| count(reading)   | avg(reading)   | 
-| ---------------- | -------------- |
-| 2                | \-20.0          | 
+
+
+![](fig/07.22_observation_type_count_query.png){#id .class border=5px alt=''}
+![](fig/07.23_observation_type_count_output.png){#id .class border=5px alt=''}
+
 
 :::::::::::::::::::::::::
 
@@ -350,14 +329,6 @@ The answer is 3.0.
 `NULL` is not a value; it is the absence of a value.
 As such it is not included in the calculation.
 
-You can confirm this, by executing this code:
-
-```sql
-SELECT AVG(a) FROM (
-    SELECT 1 AS a
-    UNION ALL SELECT NULL
-    UNION ALL SELECT 5);
-```
 
 :::::::::::::::::::::::::
 
@@ -365,88 +336,33 @@ SELECT AVG(a) FROM (
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## What Does This Query Do?
+## Comparing Precipitation Measures and Average Precipitation
 
-We want to calculate the difference between
-each individual radiation reading
-and the average of all the radiation readings.
-We write the query:
+Write a query that returns the difference between
+each individual precipitation measure
+and the average of all the precipitation measures.
 
-```sql
-SELECT reading - avg(reading) FROM Survey WHERE quant = 'rad';
-```
-
-What does this actually produce, and can you think of why?
 
 :::::::::::::::  solution
 
 ## Solution
 
-The query produces only one row of results when we what we really want is a result for each of the readings.
-The `avg()` function produces only a single value, and because it is run first, the table is reduced to a single row.
-The `reading` value is simply an arbitrary one.
+We can accomplish this task using sub-queries.
 
-To achieve what we wanted, we would have to run two queries:
 
 ```sql
-SELECT avg(reading) FROM Survey WHERE quant='rad';
-```
+SELECT value - (SELECT avg(value) AS avg
+  FROM _source_ WHERE element='PRCP') AS difference 
+  FROM _source_ WHERE element = 'PRCP';
+  ```
 
-This produces the average value (6.5625), which we can then insert into a second query:
-
-```sql
-SELECT reading - 6.5625 FROM Survey WHERE quant = 'rad';
-```
-
-This produces what we want, but we can combine this into a single query using subqueries.
-
-```sql
-SELECT reading - (SELECT avg(reading) FROM Survey WHERE quant='rad') FROM Survey WHERE quant = 'rad';
-```
-
-This way we don't have execute two queries.
-
-In summary what we have done is to replace `avg(reading)` with `(SELECT avg(reading) FROM Survey WHERE quant='rad')` in the original query.
+![](fig/07.24_difference_query.png){#id .class border=5px alt=''}
+![](fig/07.25_difference_output.png){#id .class border=5px alt=''}
 
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::::  challenge
-
-## Using the group\_concat function
-
-The function `group_concat(field, separator)`
-concatenates all the values in a field
-using the specified separator character
-(or ',' if the separator isn't specified).
-Use this to produce a one-line list of scientists' names,
-such as:
-
-```sql
-William Dyer, Frank Pabodie, Anderson Lake, Valentina Roerich, Frank Danforth
-```
-
-Can you find a way to list all the scientists family names separated by a comma?
-Can you find a way to list all the scientists personal and family names separated by a comma?
-
-:::::::::::::::  solution
-
-List all the family names separated by a comma:
-
-```sql
-SELECT group_concat(family, ',') FROM Person;
-```
-
-List all the full names separated by a comma:
-
-```sql
-SELECT group_concat(personal || ' ' || family, ',') FROM Person;
-```
-
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
@@ -454,7 +370,7 @@ SELECT group_concat(personal || ' ' || family, ',') FROM Person;
 - Aggregation functions ignore `null` values.
 - Aggregation happens after filtering.
 - Use GROUP BY to combine subsets separately.
-- If no aggregation function is specified for a field, the query may return an arbitrary value for that field.
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 

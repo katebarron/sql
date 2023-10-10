@@ -26,166 +26,112 @@ it is a one-of-a-kind value that means "nothing here".
 Dealing with `null` requires a few special tricks
 and some careful thinking.
 
-By default, SQLite does not display NULL values in its output. The `.nullvalue`
-command causes SQLite to display the value you specify for NULLs. We will use
-the value `-null-` to make the NULLs easier to see:
-
-```sql
-.nullvalue -null-
-```
 
 To start,
-let's have a look at the `Visited` table.
-There are eight records,
-but #752 doesn't have a date --- or rather,
-its date is null:
+let's have a look at the `Daily observations` table. 
+If you look at the `time` variable frequency table, there are 20,264,371 `null` values.
 
-```sql
-SELECT * FROM Visited;
-```
+![](fig/06.1_time_nulls.png){#id .class border=5px alt=''}
 
-| id    | site   | dated      | 
-| ----- | ------ | ---------- |
-| 619   | DR-1   | 1927-02-08 | 
-| 622   | DR-1   | 1927-02-10 | 
-| 734   | DR-3   | 1930-01-07 | 
-| 735   | DR-3   | 1930-01-12 | 
-| 751   | DR-3   | 1930-02-26 | 
-| 752   | DR-3   | \-null-     | 
-| 837   | MSK-4  | 1932-01-14 | 
-| 844   | DR-1   | 1932-03-22 | 
 
 Null doesn't behave like other values.
-If we select the records that come before 1930:
+If we select the records that are less than "1200" we get 3,400,669 results.
 
 ```sql
-SELECT * FROM Visited WHERE dated < '1930-01-01';
+SELECT time from _source_ where time < "1200";
 ```
 
-| id    | site   | dated      | 
-| ----- | ------ | ---------- |
-| 619   | DR-1   | 1927-02-08 | 
-| 622   | DR-1   | 1927-02-10 | 
+![](fig/06.2_time_less_than_1200_query.png){#id .class border=5px alt=''}
 
-we get two results,
-and if we select the ones that come during or after 1930:
+![](fig/06.3_time_less_than_1200_output.png){#id .class border=5px alt=''}
 
+
+If we select the records that are greater than or equal to “1200” we get 2,809,928 results.
 ```sql
-SELECT * FROM Visited WHERE dated >= '1930-01-01';
+SELECT time from _source_ where time >= "1200";
 ```
 
-| id    | site   | dated      | 
-| ----- | ------ | ---------- |
-| 734   | DR-3   | 1930-01-07 | 
-| 735   | DR-3   | 1930-01-12 | 
-| 751   | DR-3   | 1930-02-26 | 
-| 837   | MSK-4  | 1932-01-14 | 
-| 844   | DR-1   | 1932-03-22 | 
+![](fig/06.4_time_greater_than_1200_query.png){#id .class border=5px alt=''}
 
-we get five,
-but record #752 isn't in either set of results.
-The reason is that
-`null<'1930-01-01'`
-is neither true nor false:
+![](fig/06.5_time_greater_than_1200_query.png){#id .class border=5px alt=''}
+
+Why aren't the `null` values appearing in the results sets? The reason is that
+`null<'1200'` and `null>='1200'`
+are neither true nor false:
 null means, "We don't know,"
 and if we don't know the value on the left side of a comparison,
 we don't know whether the comparison is true or false.
-Since databases represent "don't know" as null,
-the value of `null<'1930-01-01'`
-is actually `null`.
-`null>='1930-01-01'` is also null
-because we can't answer to that question either.
-And since the only records kept by a `WHERE`
+Since databases represent "don't know" as `null`,
+the values of `null<'1200'` and `null>='1200'`
+are both `null`. And since the only records kept by a `WHERE`
 are those for which the test is true,
-record #752 isn't included in either set of results.
+the `null` values aren't included in either set of results.
 
-Comparisons aren't the only operations that behave this way with nulls.
-`1+null` is `null`,
-`5*null` is `null`,
-`log(null)` is `null`,
-and so on.
-In particular,
-comparing things to null with = and != produces null:
-
-```sql
-SELECT * FROM Visited WHERE dated = NULL;
-```
-
-produces no output, and neither does:
-
-```sql
-SELECT * FROM Visited WHERE dated != NULL;
-```
 
 To check whether a value is `null` or not,
 we must use a special test `IS NULL`:
 
 ```sql
-SELECT * FROM Visited WHERE dated IS NULL;
+SELECT time FROM _source_ WHERE time IS NULL;
 ```
 
-| id    | site   | dated      | 
-| ----- | ------ | ---------- |
-| 752   | DR-3   | \-null-     | 
+
+![](fig/06.6_is_null_query.png){#id .class border=5px alt=''}
+
+![](fig/06.7_is_null_output.png){#id .class border=5px alt=''}
 
 or its inverse `IS NOT NULL`:
 
 ```sql
-SELECT * FROM Visited WHERE dated IS NOT NULL;
+SELECT time FROM _source_ WHERE time IS NOT NULL;
 ```
 
-| id    | site   | dated      | 
-| ----- | ------ | ---------- |
-| 619   | DR-1   | 1927-02-08 | 
-| 622   | DR-1   | 1927-02-10 | 
-| 734   | DR-3   | 1930-01-07 | 
-| 735   | DR-3   | 1930-01-12 | 
-| 751   | DR-3   | 1930-02-26 | 
-| 837   | MSK-4  | 1932-01-14 | 
-| 844   | DR-1   | 1932-03-22 | 
+![](fig/06.8_is_not_null_query.png){#id .class border=5px alt=''}
+
+![](fig/06.9_is_not_null_output.png){#id .class border=5px alt=''}
+
 
 Null values can cause headaches wherever they appear.
 For example,
-suppose we want to find all the salinity measurements
-that weren't taken by Lake.
+suppose we want to find all the measurements
+except for those taken at "2400."
 It's natural to write the query like this:
 
 ```sql
-SELECT * FROM Survey WHERE quant = 'sal' AND person != 'lake';
+SELECT * FROM _source_ WHERE time != '2400';
 ```
 
-| taken | person | quant      | reading | 
-| ----- | ------ | ---------- | ------- |
-| 619   | dyer   | sal        | 0\.13    | 
-| 622   | dyer   | sal        | 0\.09    | 
-| 752   | roe    | sal        | 41\.6    | 
-| 837   | roe    | sal        | 22\.5    | 
-
 but this query filters omits the records
-where we don't know who took the measurement.
+where the time is unknown (or `null`).
 Once again,
-the reason is that when `person` is `null`,
+the reason is that when `time` is `null`,
 the `!=` comparison produces `null`,
-so the record isn't kept in our results.
+so the `null` records aren't kept in our results.
+
+
+![](fig/06.10_time_is_not_2400_query.png){#id .class border=5px alt=''}
+
+![](fig/06.11_time_is_not_2400_output.png){#id .class border=5px alt=''}
+
+
 If we want to keep these records
 we need to add an explicit check:
 
 ```sql
-SELECT * FROM Survey WHERE quant = 'sal' AND (person != 'lake' OR person IS NULL);
+SELECT * FROM _source_ WHERE (time != '2400' OR time IS NULL);
 ```
 
-| taken | person | quant      | reading | 
-| ----- | ------ | ---------- | ------- |
-| 619   | dyer   | sal        | 0\.13    | 
-| 622   | dyer   | sal        | 0\.09    | 
-| 735   | \-null- | sal        | 0\.06    | 
-| 752   | roe    | sal        | 41\.6    | 
-| 837   | roe    | sal        | 22\.5    | 
+![](fig/06.12_time_not_2400_or_null_query.png){#id .class border=5px alt=''}
+
+![](fig/06.13_time_not_2400_or_null_output.png){#id .class border=5px alt=''}
+
 
 We still have to decide whether this is the right thing to do or not.
 If we want to be absolutely sure that
-we aren't including any measurements by Lake in our results,
-we need to exclude all the records for which we don't know who did the work.
+we aren't including any measurements taken at '2400' in our results,
+we need to exclude all the records for which we don't the time of the measurement.
+
+
 
 In contrast to arithmetic or Boolean operators, aggregation functions
 that combine multiple values, such as `min`, `max` or `avg`, *ignore*
@@ -198,8 +144,8 @@ detail in [the next section](06-agg.md).
 
 ## Sorting by Known Date
 
-Write a query that sorts the records in `Visited` by date,
-omitting entries for which the date is not known
+Using the `Daily observations table`, generate a list of unique qflags,
+omitting entries for which the qflag is not known
 (i.e., is null).
 
 :::::::::::::::  solution
@@ -207,18 +153,12 @@ omitting entries for which the date is not known
 ## Solution
 
 ```sql
-SELECT * FROM Visited WHERE dated IS NOT NULL ORDER BY dated ASC;
+SELECT DISTINCT qflag FROM _source_ WHERE qflag IS NOT NULL;
 ```
 
-| id    | site   | dated      | 
-| ----- | ------ | ---------- |
-| 619   | DR-1   | 1927-02-08 | 
-| 622   | DR-1   | 1927-02-10 | 
-| 734   | DR-3   | 1930-01-07 | 
-| 735   | DR-3   | 1930-01-12 | 
-| 751   | DR-3   | 1930-02-26 | 
-| 837   | MSK-4  | 1932-01-14 | 
-| 844   | DR-1   | 1932-03-22 | 
+![](fig/06.14_distinct_qflag_exclude_null_query.png){#id .class border=5px alt=''}
+
+![](fig/06.15_distinct_qflag_exclude_null_output.png){#id .class border=5px alt=''}
 
 :::::::::::::::::::::::::
 
@@ -231,7 +171,7 @@ SELECT * FROM Visited WHERE dated IS NOT NULL ORDER BY dated ASC;
 What do you expect the following query to produce?
 
 ```sql
-SELECT * FROM Visited WHERE dated IN ('1927-02-08', NULL);
+SELECT * FROM _source_ WHERE time IN ('2400', '2300', NULL);
 ```
 
 What does it actually produce?
@@ -240,12 +180,12 @@ What does it actually produce?
 
 ## Solution
 
-You might expect the above query to return rows where dated is either '1927-02-08' or NULL.
-Instead it only returns rows where dated is '1927-02-08', the same as you would get from this
+You might expect the above query to return rows where `time` is either '2400', '2300' or NULL.
+Instead it only returns rows where  `time` is '2400' or '2300', the same as you would get from this
 simpler query:
 
 ```sql
-SELECT * FROM Visited WHERE dated IN ('1927-02-08');
+SELECT * FROM _source_ WHERE time IN ('2400', '2300');
 ```
 
 The reason is that the `IN` operator works with a set of *values*, but NULL is by definition
@@ -254,7 +194,7 @@ not a value and is therefore simply ignored.
 If we wanted to actually include NULL, we would have to rewrite the query to use the IS NULL condition:
 
 ```sql
-SELECT * FROM Visited WHERE dated = '1927-02-08' OR dated IS NULL;
+SELECT * FROM _source_ WHERE time IN ('2400', '2300') OR time IS NULL;
 ```
 
 :::::::::::::::::::::::::
