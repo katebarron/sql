@@ -22,23 +22,22 @@ the ability to [filter](../learners/reference.md#filter) data,
 i.e.,
 to select only those records that match certain criteria.
 For example,
-suppose we want to see when a particular site was visited.
-We can select these records from the `Visited` table
+suppose we want to see all of the stations in Texas.
+We can select these records from the `Stations` table
 by using a `WHERE` clause in our query:
 
 ```sql
-SELECT * FROM Visited WHERE site = 'DR-1';
+SELECT * FROM _source_ WHERE state = 'TX';
 ```
 
-| id     | site   | dated      | 
-| ------ | ------ | ---------- |
-| 619    | DR-1   | 1927-02-08 | 
-| 622    | DR-1   | 1927-02-10 | 
-| 844    | DR-1   | 1932-03-22 | 
+![](fig/04.1_where_query.png){#id .class border=5px alt=''}
+
+
+![](fig/04.2_where_output.png){#id .class border=5px alt=''}
 
 The database manager executes this query in two stages.
 First,
-it checks at each row in the `Visited` table
+it checks at each row in the `Station` table
 to see which ones satisfy the `WHERE`.
 It then uses the column names following the `SELECT` keyword
 to determine which columns to display.
@@ -48,95 +47,57 @@ we can filter records using `WHERE`
 based on values in columns that aren't then displayed:
 
 ```sql
-SELECT id FROM Visited WHERE site = 'DR-1';
+SELECT id FROM _source_ WHERE state = 'TX';
 ```
 
-| id     | 
-| ------ |
-| 619    | 
-| 622    | 
-| 844    | 
+![](fig/04.3_where_column_values_not_displayed_query.png){#id .class border=5px alt=''}
 
-![](fig/sql-filter.svg){alt='SQL Filtering in Action'}
+
+![](fig/04.4_where_column_values_not_displayed_output.png){#id .class border=5px alt=''}
+
 
 We can use many other Boolean operators to filter our data.
 For example,
-we can ask for all information from the DR-1 site collected before 1930:
+we can ask for all information from the stations at elevations less than 50 meters:
 
 ```sql
-SELECT * FROM Visited WHERE site = 'DR-1' AND dated < '1930-01-01';
+SELECT * FROM _source_  WHERE state = 'TX' AND elevation < 50;
 ```
 
-| id     | site   | dated      | 
-| ------ | ------ | ---------- |
-| 619    | DR-1   | 1927-02-08 | 
-| 622    | DR-1   | 1927-02-10 | 
-
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Date Types
-
-Most database managers have a special data type for dates.
-In fact, many have two:
-one for dates,
-such as "May 31, 1971",
-and one for durations,
-such as "31 days".
-SQLite doesn't:
-instead,
-it stores dates as either text
-(in the ISO-8601 standard format "YYYY-MM-DD HH:MM:SS.SSSS"),
-real numbers
-([Julian days](https://en.wikipedia.org/wiki/Julian_day), the number of days since November 24, 4714 BCE),
-or integers
-([Unix time](https://en.wikipedia.org/wiki/Unix_time), the number of seconds since midnight, January 1, 1970).
-If this sounds complicated,
-it is,
-but not nearly as complicated as figuring out
-[historical dates in Sweden](https://en.wikipedia.org/wiki/Swedish_calendar).
+![](fig/04.5_where_other_bools_query.png){#id .class border=5px alt=''}
 
 
-::::::::::::::::::::::::::::::::::::::::::::::::::
+![](fig/04.6_where_other_bools_output.png){#id .class border=5px alt=''}
 
-If we want to find out what measurements were taken by either Lake or Roerich,
+
+If we want to find stations in either Texas or Oklahoma,
 we can combine the tests on their names using `OR`:
 
 ```sql
-SELECT * FROM Survey WHERE person = 'lake' OR person = 'roe';
+SELECT * FROM _source_  WHERE state = 'TX' OR state = 'OK';
+
 ```
 
-| taken  | person | quant      | reading | 
-| ------ | ------ | ---------- | ------- |
-| 734    | lake   | sal        | 0\.05    | 
-| 751    | lake   | sal        | 0\.1     | 
-| 752    | lake   | rad        | 2\.19    | 
-| 752    | lake   | sal        | 0\.09    | 
-| 752    | lake   | temp       | \-16.0   | 
-| 752    | roe    | sal        | 41\.6    | 
-| 837    | lake   | rad        | 1\.46    | 
-| 837    | lake   | sal        | 0\.21    | 
-| 837    | roe    | sal        | 22\.5    | 
-| 844    | roe    | rad        | 11\.25   | 
+![](fig/04.7_where_or_query.png){#id .class border=5px alt=''}
+
+
+![](fig/04.8_where_or_output.png){#id .class border=5px alt=''}
+
+
 
 Alternatively,
 we can use `IN` to see if a value is in a specific set:
 
 ```sql
-SELECT * FROM Survey WHERE person IN ('lake', 'roe');
-```
+SELECT * FROM _source_  WHERE state IN ('TX', 'OK');
 
-| taken  | person | quant      | reading | 
-| ------ | ------ | ---------- | ------- |
-| 734    | lake   | sal        | 0\.05    | 
-| 751    | lake   | sal        | 0\.1     | 
-| 752    | lake   | rad        | 2\.19    | 
-| 752    | lake   | sal        | 0\.09    | 
-| 752    | lake   | temp       | \-16.0   | 
-| 752    | roe    | sal        | 41\.6    | 
-| 837    | lake   | rad        | 1\.46    | 
-| 837    | lake   | sal        | 0\.21    | 
-| 837    | roe    | sal        | 22\.5    | 
-| 844    | roe    | rad        | 11\.25   | 
+```
+![](fig/04.9_where_set_query.png){#id .class border=5px alt=''}
+
+
+![](fig/04.10_where_set_output.png){#id .class border=5px alt=''}
+
+
 
 We can combine `AND` with `OR`,
 but we need to be careful about which operator is executed first.
@@ -144,71 +105,60 @@ If we *don't* use parentheses,
 we get this:
 
 ```sql
-SELECT * FROM Survey WHERE quant = 'sal' AND person = 'lake' OR person = 'roe';
+SELECT * FROM _source_ WHERE elevation < 50 AND state = 'TX' OR state = 'OK';
+
 ```
 
-| taken  | person | quant      | reading | 
-| ------ | ------ | ---------- | ------- |
-| 734    | lake   | sal        | 0\.05    | 
-| 751    | lake   | sal        | 0\.1     | 
-| 752    | lake   | sal        | 0\.09    | 
-| 752    | roe    | sal        | 41\.6    | 
-| 837    | lake   | sal        | 0\.21    | 
-| 837    | roe    | sal        | 22\.5    | 
-| 844    | roe    | rad        | 11\.25   | 
+which is stations from Texas at less than 50 meters elevation,
+and *any* stations from Oklahoma.
 
-which is salinity measurements by Lake,
-and *any* measurement by Roerich.
+![](fig/04.11_where_incorrect_logic.query.png){#id .class border=5px alt=''}
+
+
+![](fig/04.12_where_incorrect_logic.output.png){#id .class border=5px alt=''}
+
+
+
 We probably want this instead:
 
 ```sql
-SELECT * FROM Survey WHERE quant = 'sal' AND (person = 'lake' OR person = 'roe');
+SELECT * FROM _source_ WHERE elevation < 50 AND (state = 'TX' OR state = 'OK');
+
 ```
 
-| taken  | person | quant      | reading | 
-| ------ | ------ | ---------- | ------- |
-| 734    | lake   | sal        | 0\.05    | 
-| 751    | lake   | sal        | 0\.1     | 
-| 752    | lake   | sal        | 0\.09    | 
-| 752    | roe    | sal        | 41\.6    | 
-| 837    | lake   | sal        | 0\.21    | 
-| 837    | roe    | sal        | 22\.5    | 
+![](fig/04.13_where_correct_logic_query.png){#id .class border=5px alt=''}
+
+
+![](fig/04.14_where_correct_logic_output.png){#id .class border=5px alt=''}
 
 We can also filter by partial matches.  For example, if we want to
-know something just about the site names beginning with "DR" we can
+know something just about the station ids beginning with "MD" we can
 use the `LIKE` keyword.  The percent symbol acts as a
 [wildcard](../learners/reference.md#wildcard), matching any characters in that
 place.  It can be used at the beginning, middle, or end of the string:
 
 ```sql
-SELECT * FROM Visited WHERE site LIKE 'DR%';
+SELECT * FROM _source_ WHERE id LIKE 'MD%';
 ```
 
-| id     | site   | dated      | 
-| ------ | ------ | ---------- |
-| 619    | DR-1   | 1927-02-08 | 
-| 622    | DR-1   | 1927-02-10 | 
-| 734    | DR-3   | 1930-01-07 | 
-| 735    | DR-3   | 1930-01-12 | 
-| 751    | DR-3   | 1930-02-26 | 
-| 752    | DR-3   |            | 
-| 844    | DR-1   | 1932-03-22 | 
+![](fig/04.15_where_like_query.png){#id .class border=5px alt=''}
+
+
+![](fig/04.16_where_like_output.png){#id .class border=5px alt=''}
+
 
 Finally,
 we can use `DISTINCT` with `WHERE`
-to give a second level of filtering:
+to give a second level of filtering. Let's look at an example using the `Daily observations` table :
 
 ```sql
-SELECT DISTINCT person, quant FROM Survey WHERE person = 'lake' OR person = 'roe';
+SELECT DISTINCT id FROM _source_ WHERE element = 'SNOW';
 ```
 
-| person | quant  | 
-| ------ | ------ |
-| lake   | sal    | 
-| lake   | rad    | 
-| lake   | temp   | 
-| roe    | sal    | 
-| roe    | rad    | 
+![](fig/04.17_where_distinct_query.png){#id .class border=5px alt=''}
+
+
+![](fig/04.18_where_distinct_output.png){#id .class border=5px alt=''}
 
 But remember:
 `DISTINCT` is applied to the values displayed in the chosen columns,
@@ -244,11 +194,11 @@ and use that.
 
 ## Fix This Query
 
-Suppose we want to select all sites that lie within 48 degrees of the equator.
+Suppose we want to select all stations that lie within 30 degrees of the equator.
 Our first query is:
 
 ```sql
-SELECT * FROM Site WHERE (lat > -48) OR (lat < 48);
+SELECT * FROM _source_  WHERE (latitude > -30) OR (latitude < 30);
 ```
 
 Explain why this is wrong,
@@ -263,7 +213,8 @@ the second criteria and thus be included. Instead, we want to restrict this
 to sites that meet *both* criteria:
 
 ```sql
-SELECT * FROM Site WHERE (lat > -48) AND (lat < 48);
+SELECT * FROM _source_  WHERE (latitude > -30) AND (latitude < 30);
+
 ```
 
 :::::::::::::::::::::::::
@@ -274,22 +225,38 @@ SELECT * FROM Site WHERE (lat > -48) AND (lat < 48);
 
 ## Finding Outliers
 
-Normalized salinity readings are supposed to be between 0.0 and 1.0.
-Write a query that selects all records from `Survey`
-with salinity values outside this range.
+We see that some observations have negative values. Let's make sure these are not incorrect data.
+Using the the `Daily observations` table, write a query that selects unique observations with values less than 0.
+Then, look up these observation types in the [GHCND Documentation](https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/doc/GHCND_documentation.pdf). Is it possible for these observation types to have negative values?
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```sql
-SELECT * FROM Survey WHERE quant = 'sal' AND ((reading > 1.0) OR (reading < 0.0));
+SELECT DISTINCT element FROM _source_ WHERE value < 0;
 ```
 
-| taken  | person | quant      | reading | 
-| ------ | ------ | ---------- | ------- |
-| 752    | roe    | sal        | 41\.6    | 
-| 837    | roe    | sal        | 22\.5    | 
+
+| element  |  
+| ------ | 
+| TAVG    | 
+| SX32    |
+| SN52    | 
+| TMIN    |
+| SX02    | 
+| SN32    |
+| MNPN    |
+| TMAX    |
+| EVAP    |
+| TOBS    |
+| MXPN    |
+| DAPR    |
+| MDTN    |
+| SN02    |
+
+At least for some of these observations, negative values seem possible. For example,
+TOBS is temperature at the time of observation. Temperatures can in fact be negative.
 
 :::::::::::::::::::::::::
 

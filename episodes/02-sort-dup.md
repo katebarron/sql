@@ -18,126 +18,85 @@ exercises: 10
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-In beginning our examination of the Antarctic data, we want to know:
+In beginning our examination of the GHCN Daily Weather Data, we want to know:
 
-- what kind of quantity measurements were taken at each site;
-- which scientists took measurements on the expedition;
+- what kind of elements (observation types) were taken at each station;
+- when did these observations occur;
 
-To determine which measurements were taken at each site,
-we can examine the `Survey` table.
+To determine which kinds of observations were taken,
+we can examine the `Daily observations` table.
 Data is often redundant,
 so queries often return redundant information.
 For example,
-if we select the quantities that have been measured
-from the `Survey` table,
+if we select the observation types that have been measured
+from the `Daily observations` table,
 we get this:
 
 ```sql
-SELECT quant FROM Survey;
+SELECT element FROM _source_;
 ```
 
-| quant      | 
-| ---------- |
-| rad        | 
-| sal        | 
-| rad        | 
-| sal        | 
-| rad        | 
-| sal        | 
-| temp       | 
-| rad        | 
-| sal        | 
-| temp       | 
-| rad        | 
-| temp       | 
-| sal        | 
-| rad        | 
-| sal        | 
-| temp       | 
-| sal        | 
-| rad        | 
-| sal        | 
-| sal        | 
-| rad        | 
+![](fig/03.1_select_element_query.png){#id .class border=5px alt=''}
+
+
+![](fig/03.2_select_element_output.png){#id .class border=5px alt=''}
+
 
 This result makes it difficult to see all of the different types of
-`quant` in the Survey table.  We can eliminate the redundant output to
+`elements` in the `Daily observations` table.  We can eliminate the redundant output to
 make the result more readable by adding the `DISTINCT` keyword to our
 query:
 
 ```sql
-SELECT DISTINCT quant FROM Survey;
+SELECT DISTINCT element FROM _source_;
 ```
 
-| quant      | 
-| ---------- |
-| rad        | 
-| sal        | 
-| temp       | 
+![](fig/03.3_select_element_distinct_query.png){#id .class border=5px alt=''}
 
-If we want to determine which visit (stored in the `taken` column)
-have which `quant` measurement,
+
+![](fig/03.4_select_element_distinct_output.png){#id .class border=5px alt=''}
+
+
+
+If we want to determine the stations (represented by `id`) at which different observation types
+were recorded,
 we can use the `DISTINCT` keyword on multiple columns.
 If we select more than one column,
 distinct *sets* of values are returned
 (in this case *pairs*, because we are selecting two columns):
 
 ```sql
-SELECT DISTINCT taken, quant FROM Survey;
+SELECT DISTINCT id, element FROM  _source_;
 ```
 
-| taken      | quant     | 
-| ---------- | --------- |
-| 619        | rad       | 
-| 619        | sal       | 
-| 622        | rad       | 
-| 622        | sal       | 
-| 734        | rad       | 
-| 734        | sal       | 
-| 734        | temp      | 
-| 735        | rad       | 
-| 735        | sal       | 
-| 735        | temp      | 
-| 751        | rad       | 
-| 751        | temp      | 
-| 751        | sal       | 
-| 752        | rad       | 
-| 752        | sal       | 
-| 752        | temp      | 
-| 837        | rad       | 
-| 837        | sal       | 
-| 844        | rad       | 
+![](fig/03.5_two_distinct_variables_query.png){#id .class border=5px alt=''}
 
-Notice in both cases that duplicates are removed
-even if the rows they come from didn't appear to be adjacent in the database table.
 
-Our next task is to identify the scientists on the expedition by looking at the `Person` table.
-As we mentioned earlier,
+![](fig/03.6_two_distinct_variables_output.png){#id .class border=5px alt=''}
+
+
+Our next task is to identify when weather observations occurred. As we mentioned earlier,
 database records are not stored in any particular order.
 This means that query results aren't necessarily sorted,
 and even if they are,
 we often want to sort them in a different way,
-e.g., by their identifier instead of by their personal name.
+e.g., by date.
 We can do this in SQL by adding an `ORDER BY` clause to our query:
 
 ```sql
-SELECT * FROM Person ORDER BY id;
+SELECT * FROM _source_ ORDER BY date;
 ```
 
-| id         | personal  | family   | 
-| ---------- | --------- | -------- |
-| danfort    | Frank     | Danforth | 
-| dyer       | William   | Dyer     | 
-| lake       | Anderson  | Lake     | 
-| pb         | Frank     | Pabodie  | 
-| roe        | Valentina | Roerich  | 
+![](fig/03.7_order_by_date_query.png){#id .class border=5px alt=''}
+
+
+![](fig/03.8_order_by_date_output.png){#id .class border=5px alt=''}
+
 
 By default, when we use `ORDER BY`,
 results are sorted in ascending order of the column we specify
 (i.e.,
 from least to greatest).
-
-We can sort in the opposite order using `DESC` (for "descending"):
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -148,107 +107,88 @@ While it may look that the records are consistent every time we ask for them in 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## Date Types
+
+Most database managers have a special data type for dates.
+In fact, many have two:
+one for dates,
+such as "May 31, 1971",
+and one for durations,
+such as "31 days".
+Redivis stores [Dates](https://docs.redivis.com/reference/datasets/tables/variables#date)
+and [DateTimes](https://docs.redivis.com/reference/datasets/tables/variables#datetime). 
+The former is formatted as 'YYYY-[M]M-[D]D':
+
+- YYYY: Four digit year
+- [M]M: One or two digit month
+- [D]D: One or two digit day
+
+The latter is formatted as 'YYYY-[M]M-[D]D[( |T)[H]H:[M]M:[S]S[.DDDDDD]]':
+
+- YYYY: Four digit year
+- [M]M: One or two digit month
+- [D]D: One or two digit day
+- ( |T): A space or a Tseparator
+- [H]H: One or two digit hour (valid values from 00 to 23)
+- [M]M: One or two digit minutes (valid values from 00 to 59)
+- [S]S: One or two digit seconds (valid values from 00 to 59)
+- [.DDDDDD]\: Up to six fractional digits (i.e. up to microsecond precision)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+We can sort in the opposite order using `DESC` (for "descending"):
+
+
 ```sql
-SELECT * FROM person ORDER BY id DESC;
+SELECT * FROM _source_ ORDER BY date DESC;
 ```
 
-| id         | personal  | family   | 
-| ---------- | --------- | -------- |
-| roe        | Valentina | Roerich  | 
-| pb         | Frank     | Pabodie  | 
-| lake       | Anderson  | Lake     | 
-| dyer       | William   | Dyer     | 
-| danfort    | Frank     | Danforth | 
+
+![](fig/03.9_order_by_date_desc_query.png){#id .class border=5px alt=''}
+
+
+![](fig/03.10_order_by_date_desc_output.png){#id .class border=5px alt=''}
+
 
 (And if we want to make it clear that we're sorting in ascending order,
 we can use `ASC` instead of `DESC`.)
 
-In order to look at which scientist measured quantities during each visit,
-we can look again at the `Survey` table.
-We can also sort on several fields at once.
-For example,
-this query sorts results first in ascending order by `taken`,
-and then in descending order by `person`
-within each group of equal `taken` values:
+If we want a more complete picture of when weather observations took place, we can sort on several fields at once.
+This query sorts results first in descending order by `date`,
+and then in ascending order by `time`:
 
 ```sql
-SELECT taken, person, quant FROM Survey ORDER BY taken ASC, person DESC;
+SELECT id, element, date, time FROM _source_ ORDER BY date DESC, time ASC;
 ```
 
-| taken      | person    | quant    | 
-| ---------- | --------- | -------- |
-| 619        | dyer      | rad      | 
-| 619        | dyer      | sal      | 
-| 622        | dyer      | rad      | 
-| 622        | dyer      | sal      | 
-| 734        | pb        | rad      | 
-| 734        | pb        | temp     | 
-| 734        | lake      | sal      | 
-| 735        | pb        | rad      | 
-| 735        | \-null-    | sal      | 
-| 735        | \-null-    | temp     | 
-| 751        | pb        | rad      | 
-| 751        | pb        | temp     | 
-| 751        | lake      | sal      | 
-| 752        | roe       | sal      | 
-| 752        | lake      | rad      | 
-| 752        | lake      | sal      | 
-| 752        | lake      | temp     | 
-| 837        | roe       | sal      | 
-| 837        | lake      | rad      | 
-| 837        | lake      | sal      | 
-| 844        | roe       | rad      | 
+![](fig/03.11_order_by_date_time_query.png){#id .class border=5px alt=''}
 
-This query gives us a good idea of which scientist was involved in which visit,
-and what measurements they performed during the visit.
 
-Looking at the table, it seems like some scientists specialized in
-certain kinds of measurements.  We can examine which scientists
-performed which measurements by selecting the appropriate columns and
-removing duplicates.
+![](fig/03.12_order_by_date_time_output.png){#id .class border=5px alt=''}
 
-```sql
-SELECT DISTINCT quant, person FROM Survey ORDER BY quant ASC;
-```
 
-| quant      | person    | 
-| ---------- | --------- |
-| rad        | dyer      | 
-| rad        | pb        | 
-| rad        | lake      | 
-| rad        | roe       | 
-| sal        | dyer      | 
-| sal        | lake      | 
-| sal        | \-null-    | 
-| sal        | roe       | 
-| temp       | pb        | 
-| temp       | \-null-    | 
-| temp       | lake      | 
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
 ## Finding Distinct Dates
 
-Write a query that selects distinct dates from the `Visited` table.
+Write a query that selects distinct dates from the `Daily observations` table.
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```sql
-SELECT DISTINCT dated FROM Visited;
+SELECT DISTINCT date FROM _source_;
 ```
 
-| dated      | 
-| ---------- |
-| 1927-02-08 | 
-| 1927-02-10 | 
-| 1930-01-07 | 
-| 1930-01-12 | 
-| 1930-02-26 | 
-|            | 
-| 1932-01-14 | 
-| 1932-03-22 | 
+![](fig/03.13_distinct_dates_query.png){#id .class border=5px alt=''}
+
+
+![](fig/03.14_distinct_dates_output.png){#id .class border=5px alt=''}
+
 
 :::::::::::::::::::::::::
 
@@ -256,26 +196,22 @@ SELECT DISTINCT dated FROM Visited;
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Displaying Full Names
+## Displaying Station Names and Locations
 
-Write a query that displays the full names of the scientists in the `Person` table,
-ordered by family name.
+Using the `Stations` table, write a query that displays the names of stations and the states where they are located. The output should be sorted alphabetically first by state, and then by name. 
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```sql
-SELECT personal, family FROM Person ORDER BY family ASC;
+SELECT state, name FROM _source_ ORDER BY state ASC, name ASC;
 ```
 
-| personal   | family    | 
-| ---------- | --------- |
-| Frank      | Danforth  | 
-| William    | Dyer      | 
-| Anderson   | Lake      | 
-| Frank      | Pabodie   | 
-| Valentina  | Roerich   | 
+![](fig/03.15_alphabetical_name_state_query.png){#id .class border=5px alt=''}
+
+
+![](fig/03.16_alphabetical_name_state_output.png){#id .class border=5px alt=''}
 
 :::::::::::::::::::::::::
 

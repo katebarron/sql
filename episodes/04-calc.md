@@ -16,160 +16,117 @@ exercises: 5
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-After carefully re-reading the expedition logs,
-we realize that the radiation measurements they report
+We realize that the reported precipitation measurements
 may need to be corrected upward by 5%.
 Rather than modifying the stored data,
 we can do this calculation on the fly
 as part of our query:
 
 ```sql
-SELECT 1.05 * reading FROM Survey WHERE quant = 'rad';
+SELECT value AS original_value, value * 1.05 AS updated_value FROM _source_ 
+  WHERE element = "PRCP" AND value > 0;
 ```
 
-| 1\.05 \* reading            | 
-| ------------------------- |
-| 10\.311                    | 
-| 8\.19                      | 
-| 8\.8305                    | 
-| 7\.581                     | 
-| 4\.5675                    | 
-| 2\.2995                    | 
-| 1\.533                     | 
-| 11\.8125                   | 
-
 When we run the query,
-the expression `1.05 * reading` is evaluated for each row.
+the expression `value * 1.05` is evaluated for each row where the element is precipitation and the measurement is greater than 0.
+
+![](fig/05.1_calculation_5_percent_query.png){#id .class border=5px alt=''}
+
+
+![](fig/05.2_calculation_5_percent_output.png){#id .class border=5px alt=''}
+
+
+
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## Renaming variables
+
+We can use the keyword `AS` to rename the variables in our output. SQL allows us to rename our fields, any field for that matter, whether it was calculated or one of the existing fields in our database, for succinctness and clarity. In Redivis, we **must** rename calculated variables, or Redivis will throw an error.
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 Expressions can use any of the fields,
 all of usual arithmetic operators,
 and a variety of common functions.
 (Exactly which ones depends on which database manager is being used.)
 For example,
-we can convert temperature readings from Fahrenheit to Celsius
-and round to two decimal places:
+we can convert average temperature readings from Celsius to Fahrenheit
+and round to one decimal place:
 
 ```sql
-SELECT taken, round(5 * (reading - 32) / 9, 2) FROM Survey WHERE quant = 'temp';
+SELECT value AS celsius, round(value * 9/5 + 32,1) AS fahrenheit 
+  FROM _source_ WHERE element = 'TAVG' AND value > 0;
 ```
 
-| taken                     | round(5\*(reading-32)/9, 2) | 
-| ------------------------- | -------------------------- |
-| 734                       | \-29.72                     | 
-| 735                       | \-32.22                     | 
-| 751                       | \-28.06                     | 
-| 752                       | \-26.67                     | 
+![](fig/05.3_celsius_farenheit_query.png){#id .class border=5px alt=''}
 
-As you can see from this example, though, the string describing our
-new field (generated from the equation) can become quite unwieldy. SQL
-allows us to rename our fields, any field for that matter, whether it
-was calculated or one of the existing fields in our database, for
-succinctness and clarity. For example, we could write the previous
-query as:
 
-```sql
-SELECT taken, round(5 * (reading - 32) / 9, 2) as Celsius FROM Survey WHERE quant = 'temp';
-```
+![](fig/05.4_celsius_farenheit_output.png){#id .class border=5px alt=''}
 
-| taken                     | Celsius                    | 
-| ------------------------- | -------------------------- |
-| 734                       | \-29.72                     | 
-| 735                       | \-32.22                     | 
-| 751                       | \-28.06                     | 
-| 752                       | \-26.67                     | 
+
 
 We can also combine values from different fields,
 for example by using the string concatenation operator `||`:
 
 ```sql
-SELECT personal || ' ' || family FROM Person;
+SELECT DISTINCT date || ': ' || time  AS date_time FROM _source_;
 ```
 
-| personal || ' ' || family | 
-| ------------------------- |
-| William Dyer              | 
-| Frank Pabodie             | 
-| Anderson Lake             | 
-| Valentina Roerich         | 
-| Frank Danforth            | 
+![](fig/05.5_string_concat_query.png){#id .class border=5px alt=''}
+
+
+![](fig/05.6_string_concat_output.png){#id .class border=5px alt=''}
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Fixing Salinity Readings
+## Converting units of measurement
 
-After further reading,
-we realize that Valentina Roerich
-was reporting salinity as percentages.
-Write a query that returns all of her salinity measurements
-from the `Survey` table
-with the values divided by 100.
+The average daily wind speed is measured in tenths of meters per second.
+Write a query that returns wind speed in tenths of meters per minute
+from the `Daily observations` table.
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```sql
-SELECT taken, reading / 100 FROM Survey WHERE person = 'roe' AND quant = 'sal';
+SELECT value AS per_second, (value * 60) AS per_minute FROM _source_ 
+  WHERE element = 'AWND' AND value >0;
 ```
 
-| taken                     | reading / 100              | 
-| ------------------------- | -------------------------- |
-| 752                       | 0\.416                      | 
-| 837                       | 0\.225                      | 
+![](fig/05.7_second_to_minute_query.png){#id .class border=5px alt=''}
+
+
+![](fig/05.8_second_to_minute_output.png){#id .class border=5px alt=''}
+
 
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::::  challenge
+:::::::::::::::::::::::::::::::::::::::  callout
 
 ## Unions
 
-The `UNION` operator combines the results of two queries:
+The `UNION ALL` operator combines the results of two queries. 
+`UNION ALL` will not eliminate duplicate rows.
+
+The `UNION DISTINCT` operator also combines the results of two queries, and then
+does a `SELECT DISTINCT` on the results set.
 
 ```sql
-SELECT * FROM Person WHERE id = 'dyer' UNION SELECT * FROM Person WHERE id = 'roe';
+SELECT * FROM _source_ WHERE element = 'AWND' 
+  UNION DISTINCT
+  SELECT * FROM _source_ WHERE element = 'PRCP';
 ```
 
-| id                        | personal                   | family  | 
-| ------------------------- | -------------------------- | ------- |
-| dyer                      | William                    | Dyer    | 
-| roe                       | Valentina                  | Roerich | 
+![](fig/05.9_union_all_query.png){#id .class border=5px alt=''}
 
-The `UNION ALL` command is equivalent to the `UNION` operator,
-except that `UNION ALL` will select all values.
-The difference is that `UNION ALL` will not eliminate duplicate rows.
-Instead, `UNION ALL` pulls all rows from the query
-specifics and combines them into a table.
-The `UNION` command does a `SELECT DISTINCT` on the results set.
-If all the records to be returned are unique from your union,
-use `UNION ALL` instead, it gives faster results since it skips the `DISTINCT` step.
-For this section, we shall use UNION.
 
-Use `UNION` to create a consolidated list of salinity measurements
-in which Valentina Roerich's, and only Valentina's,
-have been corrected as described in the previous challenge.
-The output should be something like:
-
-| taken                     | reading                    | 
-| ------------------------- | -------------------------- |
-| 619                       | 0\.13                       | 
-| 622                       | 0\.09                       | 
-| 734                       | 0\.05                       | 
-| 751                       | 0\.1                        | 
-| 752                       | 0\.09                       | 
-| 752                       | 0\.416                      | 
-| 837                       | 0\.21                       | 
-| 837                       | 0\.225                      | 
-
-:::::::::::::::  solution
-
-## Solution
-
-```sql
-SELECT taken, reading FROM Survey WHERE person != 'roe' AND quant = 'sal' UNION SELECT taken, reading / 100 FROM Survey WHERE person = 'roe' AND quant = 'sal' ORDER BY taken ASC;
-```
-
-:::::::::::::::::::::::::
+![](fig/05.10_union_all_output.png){#id .class border=5px alt=''}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -177,36 +134,25 @@ SELECT taken, reading FROM Survey WHERE person != 'roe' AND quant = 'sal' UNION 
 
 ## Selecting Major Site Identifiers
 
-The site identifiers in the `Visited` table have two parts
-separated by a '-':
+In the `Daily observations` table, `time` is formatted as a string.
 
-```sql
-SELECT DISTINCT site FROM Visited;
-```
-
-| site                      | 
-| ------------------------- |
-| DR-1                      | 
-| DR-3                      | 
-| MSK-4                     | 
-
-Some major site identifiers (i.e. the letter codes) are two letters long and some are three.
-The "in string" function `instr(X, Y)`
-returns the 1-based index of the first occurrence of string Y in string X,
-or 0 if Y does not exist in X.
 The substring function `substr(X, I, [L])`
 returns the substring of X starting at index I, with an optional length L.
-Use these two functions to produce a list of unique major site identifiers.
-(For this data,
-the list should contain only "DR" and "MSK").
+
+Use the substring function to return the hour daily observations were made, sorted from greatest to smallest.
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```sql
-SELECT DISTINCT substr(site, 1, instr(site, '-') - 1) AS MajorSite FROM Visited;
+SELECT SUBSTR(time, 1, 2) AS hour FROM _source_ ORDER BY hour DESC;
 ```
+
+![](fig/05.11_substring_query.png){#id .class border=5px alt=''}
+
+
+![](fig/05.12_substring_query.png){#id .class border=5px alt=''}
 
 :::::::::::::::::::::::::
 
