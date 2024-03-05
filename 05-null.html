@@ -312,14 +312,14 @@ are less than “1200” we get 3,400,669 results.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">from</span> _source_ <span class="kw">where</span> <span class="dt">time</span> <span class="op">&lt;</span> <span class="ot">"1200"</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">from</span> _source_ <span class="kw">where</span> <span class="dt">time</span> <span class="op">&lt;</span> <span class="ot">"1200"</span>;</span></code></pre>
 </div>
 <figure><img src="fig/06.2_time_less_than_1200_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/06.3_time_less_than_1200_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>If we select the records that are greater than or equal to “1200” we
 get 2,809,928 results.</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">from</span> _source_ <span class="kw">where</span> <span class="dt">time</span> <span class="op">&gt;=</span> <span class="ot">"1200"</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">from</span> _source_ <span class="kw">where</span> <span class="dt">time</span> <span class="op">&gt;=</span> <span class="ot">"1200"</span>;</span></code></pre>
 </div>
 <figure><img src="fig/06.4_time_greater_than_1200_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/06.5_time_greater_than_1200_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>Why aren’t the <code>null</code> values appearing in the results
 sets? The reason is that <code>null&lt;'1200'</code> and
@@ -336,13 +336,13 @@ special test <code>IS NULL</code>:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
 </div>
 <figure><img src="fig/06.6_is_null_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/06.7_is_null_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>or its inverse <code>IS NOT NULL</code>:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre>
 </div>
 <figure><img src="fig/06.8_is_not_null_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/06.9_is_not_null_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>Null values can cause headaches wherever they appear. For example,
 suppose we want to find all the measurements except for those taken at
@@ -350,7 +350,7 @@ suppose we want to find all the measurements except for those taken at
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="op">!=</span> <span class="st">'2400'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="op">!=</span> <span class="st">'2400'</span>;</span></code></pre>
 </div>
 <p>but this query filters omits the records where the time is unknown
 (or <code>null</code>). Once again, the reason is that when
@@ -362,7 +362,7 @@ check:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> (<span class="dt">time</span> <span class="op">!=</span> <span class="st">'2400'</span> <span class="kw">OR</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NULL</span>);</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> (<span class="dt">time</span> <span class="op">!=</span> <span class="st">'2400'</span> <span class="kw">OR</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NULL</span>);</span></code></pre>
 </div>
 <figure><img src="fig/06.12_time_not_2400_or_null_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/06.13_time_not_2400_or_null_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>We still have to decide whether this is the right thing to do or not.
 If we want to be absolutely sure that we aren’t including any
@@ -393,12 +393,12 @@ is null).</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> qflag <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> qflag <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> qflag <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> qflag <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre>
 </div>
 <figure><img src="fig/06.14_distinct_qflag_exclude_null_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/06.15_distinct_qflag_exclude_null_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure></div>
 </div>
@@ -416,7 +416,7 @@ is null).</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IN</span> (<span class="st">'2400'</span>, <span class="st">'2300'</span>, <span class="kw">NULL</span>);</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IN</span> (<span class="st">'2400'</span>, <span class="st">'2300'</span>, <span class="kw">NULL</span>);</span></code></pre>
 </div>
 <p>What does it actually produce?</p>
 </div>
@@ -427,7 +427,7 @@ is null).</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>You might expect the above query to return rows where
 <code>time</code> is either ‘2400’, ‘2300’ or NULL. Instead it only
@@ -436,7 +436,7 @@ you would get from this simpler query:</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IN</span> (<span class="st">'2400'</span>, <span class="st">'2300'</span>);</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IN</span> (<span class="st">'2400'</span>, <span class="st">'2300'</span>);</span></code></pre>
 </div>
 <p>The reason is that the <code>IN</code> operator works with a set of
 <em>values</em>, but NULL is by definition not a value and is therefore
@@ -446,7 +446,7 @@ query to use the IS NULL condition:</p>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IN</span> (<span class="st">'2400'</span>, <span class="st">'2300'</span>) <span class="kw">OR</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> <span class="dt">time</span> <span class="kw">IN</span> (<span class="st">'2400'</span>, <span class="st">'2300'</span>) <span class="kw">OR</span> <span class="dt">time</span> <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
 </div>
 </div>
 </div>
@@ -545,7 +545,7 @@ information.</li>
   "identifier": "https://swcarpentry.github.io/sql-novice-survey/05-null.html",
   "dateCreated": "2014-11-21",
   "dateModified": "2023-10-10",
-  "datePublished": "2024-02-27"
+  "datePublished": "2024-03-05"
 }
 
   </script><script>

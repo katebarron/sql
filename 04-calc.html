@@ -301,19 +301,18 @@ do this calculation on the fly as part of our query:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">value</span> <span class="kw">AS</span> original_value, <span class="fu">value</span> <span class="op">*</span> <span class="fl">1.05</span> <span class="kw">AS</span> updated_value <span class="kw">FROM</span> _source_ </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> element <span class="op">=</span> <span class="ot">"PRCP"</span> <span class="kw">AND</span> <span class="fu">value</span> <span class="op">&gt;</span> <span class="dv">0</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">value</span> <span class="kw">AS</span> original_value, <span class="fu">value</span> <span class="op">*</span> <span class="fl">1.05</span> <span class="kw">AS</span> updated_value <span class="kw">FROM</span> _source_ </span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="kw">WHERE</span> element <span class="op">=</span> <span class="ot">"PRCP"</span> <span class="kw">AND</span> <span class="fu">value</span> <span class="op">&gt;</span> <span class="dv">0</span>;</span></code></pre>
 </div>
 <p>When we run the query, the expression <code>value * 1.05</code> is
 evaluated for each row where the element is precipitation and the
 measurement is greater than 0.</p>
-<figure><img src="fig/05.1_calculation_5_percent_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/05.2_calculation_5_percent_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div id="renaming-variables" class="callout callout">
+<figure><img src="fig/05.1_calculation_5_percent_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/05.2_calculation_5_percent_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div id="callout1" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="renaming-variables" class="callout-inner">
-<h3 class="callout-title">Renaming variables<a class="anchor" aria-label="anchor" href="#renaming-variables"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="renaming-variables">Renaming variables<a class="anchor" aria-label="anchor" href="#renaming-variables"></a></h3>
 <div class="callout-content">
 <p>We can use the keyword <code>AS</code> to rename the variables in our
 output. SQL allows us to rename our fields, any field for that matter,
@@ -331,15 +330,15 @@ round to one decimal place:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">value</span> <span class="kw">AS</span> celsius, <span class="fu">round</span>(<span class="fu">value</span> <span class="op">*</span> <span class="dv">9</span><span class="op">/</span><span class="dv">5</span> <span class="op">+</span> <span class="dv">32</span>,<span class="dv">1</span>) <span class="kw">AS</span> fahrenheit </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'TAVG'</span> <span class="kw">AND</span> <span class="fu">value</span> <span class="op">&gt;</span> <span class="dv">0</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">value</span> <span class="kw">AS</span> celsius, <span class="fu">round</span>(<span class="fu">value</span> <span class="op">*</span> <span class="dv">9</span><span class="op">/</span><span class="dv">5</span> <span class="op">+</span> <span class="dv">32</span>,<span class="dv">1</span>) <span class="kw">AS</span> fahrenheit </span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'TAVG'</span> <span class="kw">AND</span> <span class="fu">value</span> <span class="op">&gt;</span> <span class="dv">0</span>;</span></code></pre>
 </div>
 <figure><img src="fig/05.3_celsius_farenheit_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/05.4_celsius_farenheit_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>We can also combine values from different fields, for example by
 using the string concatenation operator <code>||</code>:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="dt">date</span> <span class="op">||</span> <span class="st">': '</span> <span class="op">||</span> <span class="dt">time</span>  <span class="kw">AS</span> date_time <span class="kw">FROM</span> _source_;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="dt">date</span> <span class="op">||</span> <span class="st">': '</span> <span class="op">||</span> <span class="dt">time</span>  <span class="kw">AS</span> date_time <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
 <figure><img src="fig/05.5_string_concat_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/05.6_string_concat_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div id="converting-units-of-measurement" class="callout challenge">
 <div class="callout-square">
@@ -360,25 +359,24 @@ minute from the <code>Daily observations</code> table.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">value</span> <span class="kw">AS</span> per_second, (<span class="fu">value</span> <span class="op">*</span> <span class="dv">60</span>) <span class="kw">AS</span> per_minute <span class="kw">FROM</span> _source_ </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'AWND'</span> <span class="kw">AND</span> <span class="fu">value</span> <span class="op">&gt;</span><span class="dv">0</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">value</span> <span class="kw">AS</span> per_second, (<span class="fu">value</span> <span class="op">*</span> <span class="dv">60</span>) <span class="kw">AS</span> per_minute <span class="kw">FROM</span> _source_ </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'AWND'</span> <span class="kw">AND</span> <span class="fu">value</span> <span class="op">&gt;</span><span class="dv">0</span>;</span></code></pre>
 </div>
 <figure><img src="fig/05.7_second_to_minute_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/05.8_second_to_minute_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure></div>
 </div>
 </div>
 </div>
-<div id="unions" class="callout callout">
+<div id="callout2" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="unions" class="callout-inner">
-<h3 class="callout-title">Unions<a class="anchor" aria-label="anchor" href="#unions"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="unions">Unions<a class="anchor" aria-label="anchor" href="#unions"></a></h3>
 <div class="callout-content">
 <p>The <code>UNION ALL</code> operator combines the results of two
 queries. <code>UNION ALL</code> will not eliminate duplicate rows.</p>
@@ -388,9 +386,9 @@ set.</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'AWND'</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">UNION</span> <span class="kw">DISTINCT</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'AWND'</span> </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="kw">UNION</span> <span class="kw">DISTINCT</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">WHERE</span> element <span class="op">=</span> <span class="st">'PRCP'</span>;</span></code></pre>
 </div>
 <figure><img src="fig/05.9_union_all_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/05.10_union_all_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure></div>
 </div>
@@ -417,12 +415,12 @@ made, sorted from greatest to smallest.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUBSTR</span>(<span class="dt">time</span>, <span class="dv">1</span>, <span class="dv">2</span>) <span class="kw">AS</span> <span class="kw">hour</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">hour</span> <span class="kw">DESC</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUBSTR</span>(<span class="dt">time</span>, <span class="dv">1</span>, <span class="dv">2</span>) <span class="kw">AS</span> <span class="kw">hour</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">hour</span> <span class="kw">DESC</span>;</span></code></pre>
 </div>
 <figure><img src="fig/05.11_substring_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="fig/05.12_substring_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure></div>
 </div>
@@ -503,7 +501,7 @@ made, sorted from greatest to smallest.</p>
   "identifier": "https://swcarpentry.github.io/sql-novice-survey/04-calc.html",
   "dateCreated": "2014-11-21",
   "dateModified": "2023-10-10",
-  "datePublished": "2024-02-27"
+  "datePublished": "2024-03-05"
 }
 
   </script><script>

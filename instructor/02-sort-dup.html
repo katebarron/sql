@@ -311,7 +311,7 @@ the observation types that have been measured from the
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> element <span class="kw">FROM</span> _source_;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> element <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
 <figure><img src="../fig/03.1_select_element_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.2_select_element_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>This result makes it difficult to see all of the different types of
 <code>elements</code> in the <code>Daily observations</code> table. We
@@ -320,7 +320,7 @@ adding the <code>DISTINCT</code> keyword to our query:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> element <span class="kw">FROM</span> _source_;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> element <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
 <figure><img src="../fig/03.3_select_element_distinct_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.4_select_element_distinct_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>If we want to determine the stations (represented by <code>id</code>)
 at which different observation types were recorded, we can use the
@@ -330,7 +330,7 @@ case <em>pairs</em>, because we are selecting two columns):</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="kw">id</span>, element <span class="kw">FROM</span>  _source_;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="kw">id</span>, element <span class="kw">FROM</span>  _source_;</span></code></pre>
 </div>
 <figure><img src="../fig/03.5_two_distinct_variables_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.6_two_distinct_variables_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>Our next task is to identify when weather observations occurred. As
 we mentioned earlier, database records are not stored in any particular
@@ -341,18 +341,17 @@ our query:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span>;</span></code></pre>
 </div>
 <figure><img src="../fig/03.7_order_by_date_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.8_order_by_date_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>By default, when we use <code>ORDER BY</code>, results are sorted in
 ascending order of the column we specify (i.e., from least to
 greatest).</p>
-<div id="a-note-on-ordering" class="callout callout">
+<div id="callout1" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="a-note-on-ordering" class="callout-inner">
-<h3 class="callout-title">A note on ordering<a class="anchor" aria-label="anchor" href="#a-note-on-ordering"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="a-note-on-ordering">A note on ordering<a class="anchor" aria-label="anchor" href="#a-note-on-ordering"></a></h3>
 <div class="callout-content">
 <p>While it may look that the records are consistent every time we ask
 for them in this lesson, that is because no one has changed or modified
@@ -362,13 +361,12 @@ order.</p>
 </div>
 </div>
 </div>
-<div id="date-types" class="callout callout">
+<div id="callout2" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="date-types" class="callout-inner">
-<h3 class="callout-title">Date Types<a class="anchor" aria-label="anchor" href="#date-types"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="date-types">Date Types<a class="anchor" aria-label="anchor" href="#date-types"></a></h3>
 <div class="callout-content">
 <p>Most database managers have a special data type for dates. In fact,
 many have two: one for dates, such as “May 31, 1971”, and one for
@@ -397,7 +395,7 @@ precision)</li>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span> <span class="kw">DESC</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span> <span class="kw">DESC</span>;</span></code></pre>
 </div>
 <figure><img src="../fig/03.9_order_by_date_desc_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.10_order_by_date_desc_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>(And if we want to make it clear that we’re sorting in ascending
 order, we can use <code>ASC</code> instead of <code>DESC</code>.)</p>
@@ -408,7 +406,7 @@ order by <code>time</code>:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">id</span>, element, <span class="dt">date</span>, <span class="dt">time</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span> <span class="kw">DESC</span>, <span class="dt">time</span> <span class="kw">ASC</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">id</span>, element, <span class="dt">date</span>, <span class="dt">time</span> <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">date</span> <span class="kw">DESC</span>, <span class="dt">time</span> <span class="kw">ASC</span>;</span></code></pre>
 </div>
 <figure><img src="../fig/03.11_order_by_date_time_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.12_order_by_date_time_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div id="finding-distinct-dates" class="callout challenge">
 <div class="callout-square">
@@ -428,12 +426,12 @@ order by <code>time</code>:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="dt">date</span> <span class="kw">FROM</span> _source_;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="dt">date</span> <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
 <figure><img src="../fig/03.13_distinct_dates_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.14_distinct_dates_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure></div>
 </div>
@@ -458,12 +456,12 @@ should be sorted alphabetically first by state, and then by name.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> state, name <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> state <span class="kw">ASC</span>, name <span class="kw">ASC</span>;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> state, name <span class="kw">FROM</span> _source_ <span class="kw">ORDER</span> <span class="kw">BY</span> state <span class="kw">ASC</span>, name <span class="kw">ASC</span>;</span></code></pre>
 </div>
 <figure><img src="../fig/03.15_alphabetical_name_state_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/03.16_alphabetical_name_state_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure></div>
 </div>
@@ -548,7 +546,7 @@ DISTINCT.</li>
   "identifier": "https://swcarpentry.github.io/sql-novice-survey/instructor/02-sort-dup.html",
   "dateCreated": "2014-11-21",
   "dateModified": "2023-10-10",
-  "datePublished": "2024-02-27"
+  "datePublished": "2024-03-05"
 }
 
   </script><script>

@@ -348,31 +348,29 @@ will look like this:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> state, name <span class="kw">FROM</span> _source_;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> state, name <span class="kw">FROM</span> _source_;</span></code></pre>
 </div>
 <p>Select <strong>Run</strong> in the upper right-hand corner. Then
 select the output table node. Here we can see the results of the
 query.</p>
-<figure><img src="../fig/02.9_run.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/02.10_output_table_node.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div id="table-name" class="callout callout">
+<figure><img src="../fig/02.9_run.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/02.10_output_table_node.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div id="callout1" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="table-name" class="callout-inner">
-<h3 class="callout-title">Table Name<a class="anchor" aria-label="anchor" href="#table-name"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="table-name">Table Name<a class="anchor" aria-label="anchor" href="#table-name"></a></h3>
 <div class="callout-content">
 <p>In the Redivis SQL query editor, the table we are working with is
 given the alias <code>_source_</code>.</p>
 </div>
 </div>
 </div>
-<div id="semi-colon" class="callout callout">
+<div id="callout2" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="semi-colon" class="callout-inner">
-<h3 class="callout-title">Semi-Colon<a class="anchor" aria-label="anchor" href="#semi-colon"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="semi-colon">Semi-Colon<a class="anchor" aria-label="anchor" href="#semi-colon"></a></h3>
 <div class="callout-content">
 <p>Generally, database managers expect a semicolon at the end of a
 query. This tells the database manager that the query is complete and
@@ -388,7 +386,7 @@ insensitive</a>.</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SeLeCt</span> StAtE,nAmE <span class="kw">FrOm</span> _source_</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="kw">SeLeCt</span> StAtE,nAmE <span class="kw">FrOm</span> _source_</span></code></pre>
 </div>
 <figure><img src="../fig/02.11_case_insensitive_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/02.12_case_insensitive_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>You can use SQL’s case insensitivity to distinguish between different
 parts of an SQL statement. In this lesson, we use the convention of
@@ -405,14 +403,14 @@ columns in the output by writing our query as:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> name,state <span class="kw">FROM</span> _source_</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> name,state <span class="kw">FROM</span> _source_</span></code></pre>
 </div>
 <figure><img src="../fig/02.13_reverse_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/02.14_reverse_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><p>As a shortcut, we can select all of the columns in a table using
 <code>*</code>:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> _source_</span></code></pre>
 </div>
 <figure><img src="../fig/02.15_select_all_query.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><figure><img src="../fig/02.16_select_all_output.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div id="integers-vs.-floats" class="callout challenge">
 <div class="callout-square">
@@ -470,7 +468,7 @@ the <code>Stations</code> table.</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> geopoint <span class="kw">FROM</span> _source_</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> geopoint <span class="kw">FROM</span> _source_</span></code></pre>
 </div>
 </div>
 </div>
@@ -488,13 +486,13 @@ the <code>Stations</code> table.</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> personal, family <span class="kw">FROM</span> person;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> personal, family <span class="kw">FROM</span> person;</span></code></pre>
 </div>
 <p>or as:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> Personal, Family <span class="kw">from</span> PERSON;</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="kw">select</span> Personal, Family <span class="kw">from</span> PERSON;</span></code></pre>
 </div>
 <p>What style do you find easiest to read, and why?</p>
 </div>
@@ -581,7 +579,7 @@ information from databases.</li>
   "identifier": "https://swcarpentry.github.io/sql-novice-survey/instructor/01-select.html",
   "dateCreated": "2014-11-21",
   "dateModified": "2023-10-05",
-  "datePublished": "2024-02-27"
+  "datePublished": "2024-03-05"
 }
 
   </script><script>

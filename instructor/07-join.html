@@ -317,14 +317,14 @@ need to combine these tables somehow.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  [variables]</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  [<span class="kw">table</span> <span class="dv">1</span>]</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  [<span class="kw">table</span> <span class="dv">2</span>] </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  [common field]</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  [variables]</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="kw">FROM</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  [<span class="kw">table</span> <span class="dv">1</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="kw">JOIN</span> </span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  [<span class="kw">table</span> <span class="dv">2</span>] </span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="kw">ON</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  [common field]</span></code></pre>
 </div>
 <p>We want to join <code>Daily observations</code>
 (<code>_source_</code>) with <code>Stations</code>
@@ -334,28 +334,28 @@ For clarity, we give our tables the aliases <code>t0</code> and
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  [variables]</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  _source_ <span class="kw">AS</span> t0</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2:sample</span>.stations<span class="ch">:w0e9</span>` <span class="kw">AS</span> t1  </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  [common field]</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  [variables]</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="kw">FROM</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  _source_ <span class="kw">AS</span> t0</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="kw">JOIN</span> </span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2:sample</span>.stations<span class="ch">:w0e9</span>` <span class="kw">AS</span> t1  </span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="kw">ON</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  [common field]</span></code></pre>
 </div>
 <p>Next, we must choose field(s) on which to join our two tables. We
 will join our tables <code>ON</code> the <code>id</code> field.</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  [variables]</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  _source_ <span class="kw">AS</span> t0</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2:sample</span>.stations<span class="ch">:w0e9</span>` <span class="kw">AS</span> t1  </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="op">=</span> t1.<span class="kw">id</span></span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  [variables]</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="kw">FROM</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  _source_ <span class="kw">AS</span> t0</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="kw">JOIN</span> </span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2:sample</span>.stations<span class="ch">:w0e9</span>` <span class="kw">AS</span> t1  </span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="kw">ON</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="op">=</span> t1.<span class="kw">id</span></span></code></pre>
 </div>
 <p>Finally, we select the variables we would like in our output. Notice
 that we used <code>Table.field</code> to specify field names in the
@@ -366,21 +366,21 @@ the <code>AS</code> operator.</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="kw">AS</span> <span class="kw">id</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  t0.<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">date</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  t0.<span class="dt">time</span> <span class="kw">AS</span> <span class="dt">time</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  t0.element <span class="kw">AS</span> element,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  t0.<span class="fu">value</span> <span class="kw">AS</span> <span class="fu">value</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  t1.state <span class="kw">AS</span> state,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  t1.name <span class="kw">AS</span> name,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  t1.geopoint <span class="kw">AS</span> geopoint</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  _source_ <span class="kw">AS</span> t0</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2:sample</span>.stations<span class="ch">:w0e9</span>` <span class="kw">AS</span> t1  </span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="op">=</span> t1.<span class="kw">id</span></span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="kw">AS</span> <span class="kw">id</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  t0.<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">date</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  t0.<span class="dt">time</span> <span class="kw">AS</span> <span class="dt">time</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  t0.element <span class="kw">AS</span> element,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  t0.<span class="fu">value</span> <span class="kw">AS</span> <span class="fu">value</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  t1.state <span class="kw">AS</span> state,</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  t1.name <span class="kw">AS</span> name,</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  t1.geopoint <span class="kw">AS</span> geopoint</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="kw">FROM</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  _source_ <span class="kw">AS</span> t0</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="kw">JOIN</span> </span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2:sample</span>.stations<span class="ch">:w0e9</span>` <span class="kw">AS</span> t1  </span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="kw">ON</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="op">=</span> t1.<span class="kw">id</span></span></code></pre>
 </div>
 <p>Here is what our query and output look like in Redivis:</p>
 <p><img src="../fig/08.1_two_table_join_query.png" id="id" class="class figure" border="5px" alt=""><img src="../fig/08.2_two_table_join_output.png" id="id" class="class figure" border="5px" alt=""></p>
@@ -391,27 +391,27 @@ to filter out combinations of records that don’t make sense:</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="kw">AS</span> <span class="kw">id</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  t0.<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">date</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  t0.<span class="dt">time</span> <span class="kw">AS</span> <span class="dt">time</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  t0.element <span class="kw">AS</span> element,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  t0.<span class="fu">value</span> <span class="kw">AS</span> <span class="fu">value</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  t1.<span class="kw">id</span> <span class="kw">AS</span> foreign_id,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  t1.state <span class="kw">AS</span> state_code,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  t1.name <span class="kw">AS</span> name,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  t1.geopoint <span class="kw">AS</span> geopoint,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  t2.name <span class="kw">AS</span> state_name</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  _source_ <span class="kw">AS</span> t0</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> </span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2:sample</span>.stations<span class="ch">:w0e9</span>` <span class="kw">AS</span> t1  </span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="op">=</span> t1.<span class="kw">id</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2</span>.states<span class="ch">:akcp</span>` <span class="kw">as</span> t2</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  t1.state <span class="op">=</span> t2.code</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="kw">AS</span> <span class="kw">id</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  t0.<span class="dt">date</span> <span class="kw">AS</span> <span class="dt">date</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  t0.<span class="dt">time</span> <span class="kw">AS</span> <span class="dt">time</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  t0.element <span class="kw">AS</span> element,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  t0.<span class="fu">value</span> <span class="kw">AS</span> <span class="fu">value</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  t1.<span class="kw">id</span> <span class="kw">AS</span> foreign_id,</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  t1.state <span class="kw">AS</span> state_code,</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  t1.name <span class="kw">AS</span> name,</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  t1.geopoint <span class="kw">AS</span> geopoint,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  t2.name <span class="kw">AS</span> state_name</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="kw">FROM</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  _source_ <span class="kw">AS</span> t0</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="kw">JOIN</span> </span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2:sample</span>.stations<span class="ch">:w0e9</span>` <span class="kw">AS</span> t1  </span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="kw">ON</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="op">=</span> t1.<span class="kw">id</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2</span>.states<span class="ch">:akcp</span>` <span class="kw">as</span> t2</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="kw">ON</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>  t1.state <span class="op">=</span> t2.code</span></code></pre>
 </div>
 <p><img src="../fig/08.3_double_join_query.png" id="id" class="class figure" border="5px" alt=""><img src="../fig/08.4_double_join_output.png" id="id" class="class figure" border="5px" alt=""></p>
 <p>In the above query, we join <code>Daily observations</code> with
@@ -425,13 +425,12 @@ doing this, we are asking the database:</p>
 matches among <code>States.code</code>, return the value
 <code>Stations.state</code> and <code>States.code</code> as
 <code>null</code>.</p></li>
-</ol><figure><img src="../fig/08.5_left_join_outcome.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div id="types-of-joins" class="callout callout">
+</ol><figure><img src="../fig/08.5_left_join_outcome.png" id="id" class="class figure mx-auto d-block" border="5px" alt=""></figure><div id="callout1" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="types-of-joins" class="callout-inner">
-<h3 class="callout-title">Types of JOINS<a class="anchor" aria-label="anchor" href="#types-of-joins"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="types-of-joins">Types of JOINS<a class="anchor" aria-label="anchor" href="#types-of-joins"></a></h3>
 <div class="callout-content">
 <p>There are several variations of <code>JOIN</code>. For more
 information, check out the <a href="https://www.w3schools.com/sql/sql_join.asp" class="external-link">W3 Schools SQL
@@ -471,26 +470,26 @@ information, as well as the name and state of the station.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  t0.<span class="kw">id</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  t0.latitude,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  t0.longitude,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  t0.element,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  t0.firstyear,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  t0.lastyear,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  t1.name,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  t1.state</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  _source_ <span class="kw">AS</span> t0</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> </span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2:sample</span>.stations<span class="ch">:w0e9</span>` <span class="kw">AS</span> t1  </span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="op">=</span> t1.<span class="kw">id</span></span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  t0.<span class="kw">id</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  t0.latitude,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  t0.longitude,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  t0.element,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  t0.firstyear,</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  t0.lastyear,</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  t1.name,</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  t1.state</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="kw">FROM</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  _source_ <span class="kw">AS</span> t0</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="kw">JOIN</span> </span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  `stanfordphs.ghcn_daily_weather_data<span class="ch">:mg94:v1_2:sample</span>.stations<span class="ch">:w0e9</span>` <span class="kw">AS</span> t1  </span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="kw">ON</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  t0.<span class="kw">id</span> <span class="op">=</span> t1.<span class="kw">id</span></span></code></pre>
 </div>
 <p><img src="../fig/08.6_join_inventory_stations_query.png" id="id" class="class figure" border="5px" alt=""><img src="../fig/08.7_join_inventory_stations_output.png" id="id" class="class figure" border="5px" alt=""></p>
 </div>
@@ -582,7 +581,7 @@ primary keys and foreign keys between tables.</li>
   "identifier": "https://swcarpentry.github.io/sql-novice-survey/instructor/07-join.html",
   "dateCreated": "2014-11-21",
   "dateModified": "2023-10-10",
-  "datePublished": "2024-02-27"
+  "datePublished": "2024-03-05"
 }
 
   </script><script>
